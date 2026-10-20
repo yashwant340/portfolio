@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f7f9f9;
+  --surface: #ffffff;
+  --fg: #0b1215;
+  --muted: #4a5a5f;
+  --line: #e2e8e8;
+  --accent: #0f766e;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(15 118 110 / 0.12);
+  --grid: rgb(11 18 21 / 0.06);
+  --media: #eef3f2;
+  --nav: rgb(247 249 249 / 0.8);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0a0f10;
+  --surface: #11181a;
+  --fg: #e6edee;
+  --muted: #9aabae;
+  --line: #1f2a2d;
+  --accent: #2dd4bf;
+  --accent-fg: #04201d;
+  --accent-soft: rgb(45 212 191 / 0.14);
+  --grid: rgb(230 237 238 / 0.06);
+  --media: #0e1517;
+  --nav: rgb(10 15 16 / 0.75);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-grid: var(--grid);
+  --color-media: var(--media);
+  --color-nav: var(--nav);
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* Underline that grows on hover */
+  .link-grow {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s ease;
+  }
+  .link-grow:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Cursor-following glow: the element sets --gx/--gy on pointer move */
+  .glow {
+    background: radial-gradient(
+      var(--glow-size, 420px) circle at var(--gx, 30%) var(--gy, 35%),
+      var(--accent-soft),
+      transparent 70%
+    );
+  }
+
+  /* Faint grid behind the intro */
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* Scroll reveal; <Reveal> adds .is-visible when the element enters the viewport */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s var(--ease-out-soft),
+      transform 0.7s var(--ease-out-soft);
+    transition-delay: var(--delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* A line that draws itself: downward on narrow screens, left-to-right on wide */
+  .reveal-line {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.4s var(--ease-out-soft);
+    transition-delay: var(--delay, 0ms);
+  }
+  @media (min-width: 1024px) {
+    .reveal-line {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+  }
+  .reveal-line.is-visible {
+    transform: none;
+  }
+
+  /* Child that pops in slightly after its .reveal parent */
+  .reveal .pop {
+    opacity: 0;
+    transform: scale(0.3);
+    transition:
+      opacity 0.4s ease,
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(var(--delay, 0ms) + 120ms);
+  }
+  .reveal.is-visible .pop {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Line icons that draw themselves when their .reveal parent appears.
+     Every drawable shape sets pathLength="1". */
+  .draw [pathLength] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.1s var(--ease-out-soft);
+    transition-delay: calc(var(--delay, 0ms) + 200ms);
+  }
+  /* Hidden until every .reveal around it is visible */
+  .reveal:not(.is-visible) .draw [pathLength] {
+    stroke-dashoffset: 1;
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg) scale(1.08); }
+    30% { transform: rotate(-10deg) scale(1.08); }
+    65% { transform: rotate(7deg) scale(1.08); }
+  }
+}
+
+/* Card → project page morph (View Transitions API; browsers without it just navigate) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal-line,
+  .reveal .pop,
+  .draw [pathLength] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+  *,
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
