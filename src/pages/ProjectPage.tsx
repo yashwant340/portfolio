@@ -91,14 +91,15 @@ export function ProjectPage() {
       </header>
 
       <section className="mt-[72px]" aria-label="Demo clips">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" style={{ viewTransitionName: `shot-${project.slug}` }}>
+        {/* Clips are wide screen recordings: the first spans the row so its text stays readable */}
+        <div className="grid gap-5 sm:grid-cols-2" style={{ viewTransitionName: `shot-${project.slug}` }}>
           {project.clips.map((clip, i) => (
-            <Reveal key={clip.title} index={i}>
+            <Reveal key={clip.title} index={i} className={i === 0 ? 'sm:col-span-2' : ''}>
               <figure className="overflow-hidden rounded-2xl border border-line bg-surface transition duration-300 hover:-translate-y-1 hover:border-accent">
                 {clip.src ? (
-                  <video src={clip.src} autoPlay muted loop playsInline className="aspect-[16/10] w-full bg-media object-cover" />
+                  <video src={clip.src} autoPlay muted loop playsInline className="aspect-[2940/1414] w-full bg-media object-cover" />
                 ) : (
-                  <div className="flex aspect-[16/10] items-center justify-center bg-media text-xs text-muted">
+                  <div className="flex aspect-[2940/1414] items-center justify-center bg-media text-xs text-muted">
                     Clip coming soon
                   </div>
                 )}
