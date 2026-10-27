@@ -29,7 +29,7 @@ export function Shot({ project, variant }: Props) {
         <span className="size-2.5 rounded-full bg-line" />
         <span className="size-2.5 rounded-full bg-line" />
       </div>
-      <div className="relative aspect-[16/10] bg-media">
+      <div className="relative aspect-[2940/1414] bg-media">
         {project.cover ? (
           <img src={project.cover} alt={`${project.title} screenshot`} className="absolute inset-0 size-full object-cover" />
         ) : variant % 2 === 0 ? (

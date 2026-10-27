@@ -33,6 +33,10 @@ All text, links and projects live in `src/content/`. Components only read from t
 2. Edit the frontmatter and overview. Use `status: in-progress` with just `slug`, `order`, `title` and `summary` for a project that isn't ready.
 3. Put media in `public/projects/<slug>/` and reference it from the frontmatter: `cover` (screenshot), `preview` (short muted clip that plays on hover), and `src` on each entry in `clips`.
 
+### Live demos
+
+Shipped projects without a `links.live` URL show a "Live demo coming soon" badge and note; the wording is `liveDemoSoon` in `profile.ts`. Once a project is deployed, add `live: https://…` under its `links` and the badge becomes a **Live demo** button.
+
 ### CV
 
 Put the PDF at `public/cv.pdf` (or change `links.cv` in `profile.ts`).

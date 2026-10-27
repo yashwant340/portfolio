@@ -11,6 +11,10 @@ export const profile: Profile = {
     heading: 'Get in touch',
     text: "I'm looking for full-time software engineering roles in Dublin from late 2027, and a summer 2027 internship. My inbox is open, so say hello and I'll get back to you.",
   },
+  liveDemoSoon: {
+    label: 'Live demo coming soon',
+    note: "I'm deploying each project with a demo mode and sample data, so you'll be able to try it in your browser without signing up. Until then, the clips below show it in action.",
+  },
   links: {
     cv: '/cv.pdf',
     github: 'https://github.com/yashwant340',

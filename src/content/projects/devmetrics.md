@@ -15,13 +15,15 @@ highlights:
 links:
   frontend: https://github.com/yashwant340/devMetricsUI
   backend: https://github.com/yashwant340/devMetricsService
-# Add files under public/projects/devmetrics/ and point to them here:
-# cover: /projects/devmetrics/cover.png
-# preview: /projects/devmetrics/preview.mp4
+cover: /projects/devmetrics/cover.png
+preview: /projects/devmetrics/preview.mp4
 clips:
   - title: Connect a repository
+    src: /projects/devmetrics/clip-connect.mp4
   - title: Sync and health score
+    src: /projects/devmetrics/clip-sync.mp4
   - title: Compare two repositories
+    src: /projects/devmetrics/clip-compare.mp4
 architecture:
   summary: Two apps. A React client that only renders and fetches, and a Spring Boot API that owns auth, GitHub integration, persistence and metric computation.
   client:

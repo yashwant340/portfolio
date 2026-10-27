@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
+import { LiveSoon } from '../components/LiveSoon'
 import { Reveal } from '../components/Reveal'
 import { Shot } from '../components/Shot'
 import { projects, shippedProjects } from '../lib/content'
+import { filled } from '../lib/todo'
 
 export function Projects() {
   const upcoming = projects.filter((p) => p.status === 'in-progress')
@@ -54,14 +56,17 @@ export function Projects() {
               ))}
             </ul>
             <div className="mt-6 text-[13px] text-muted">{p.stack.slice(0, 4).join(' · ')}</div>
-            <Link
-              to={`/projects/${p.slug}`}
-              viewTransition
-              className="group/cta mt-6 inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-accent"
-            >
-              <span className="link-grow">View project</span>
-              <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
-            </Link>
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <Link
+                to={`/projects/${p.slug}`}
+                viewTransition
+                className="group/cta inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-accent"
+              >
+                <span className="link-grow">View project</span>
+                <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
+              </Link>
+              {!filled(p.links.live) && <LiveSoon size="sm" />}
+            </div>
           </div>
         </Reveal>
       ))}
