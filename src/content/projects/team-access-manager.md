@@ -15,12 +15,15 @@ highlights:
 links:
   frontend: https://github.com/yashwant340/team-access-manager-UI
   backend: https://github.com/yashwant340/team-access-manager-service
-# cover: /projects/team-access-manager/cover.png
-# preview: /projects/team-access-manager/preview.mp4
+cover: /projects/team-access-manager/cover.png
+preview: /projects/team-access-manager/preview.mp4
 clips:
-  - title: Request and approve access
+  - title: Review and approve an access request
+    src: /projects/team-access-manager/clip-approve.mp4
   - title: Inherit vs override permissions
+    src: /projects/team-access-manager/clip-override.mp4
   - title: Audit trail
+    src: /projects/team-access-manager/clip-audit.mp4
 architecture:
   summary: A React client with role-based routes talks to a Spring Boot API that enforces authentication, applies permission rules, records audit events and sends email.
   client:
