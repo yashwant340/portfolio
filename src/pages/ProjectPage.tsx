@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
+import { LiveSoon } from '../components/LiveSoon'
 import { Reveal } from '../components/Reveal'
 import { Tag } from '../components/Tag'
 import { findProject, profile, shippedProjects } from '../lib/content'
@@ -50,6 +51,7 @@ export function ProjectPage() {
     { label: 'Frontend code', href: filled(project.links.frontend) },
     { label: 'Backend code', href: filled(project.links.backend) },
   ].filter((l): l is { label: string; href: string } => !!l.href)
+  const liveSoon = !filled(project.links.live)
 
   return (
     <article className="mx-auto max-w-[1120px] px-6 pt-16 pb-24 sm:pt-[72px]">
@@ -70,6 +72,7 @@ export function ProjectPage() {
         </h1>
         <p className="mt-5 max-w-[60ch] text-[19px] leading-relaxed text-muted">{project.tagline}</p>
         <div className="mt-7 flex flex-wrap items-center gap-3">
+          {liveSoon && <LiveSoon />}
           {links.map((l) => (
             <a
               key={l.label}
@@ -88,6 +91,7 @@ export function ProjectPage() {
             ))}
           </div>
         </div>
+        {liveSoon && <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted">{profile.liveDemoSoon.note}</p>}
       </header>
 
       <section className="mt-[72px]" aria-label="Demo clips">
