@@ -24,7 +24,7 @@ function Node({ title, detail, primary }: { title: string; detail: string; prima
 function Edge({ label }: { label: string }) {
   return (
     <div className="flex min-w-[110px] flex-col items-center gap-1 px-3 py-2" aria-hidden>
-      <span className="text-[11px] text-muted">{label}</span>
+      <span className="text-xs text-muted">{label}</span>
       <div className="h-px w-full bg-accent" />
     </div>
   )

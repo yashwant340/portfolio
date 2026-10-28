@@ -19,7 +19,7 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-nav backdrop-blur-md">
       <nav className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-6 py-3.5">
-        <Link to="/" className="text-[15px] font-semibold tracking-tight">
+        <Link to="/" className="tap-target text-[15px] font-semibold tracking-tight">
           {profile.name}
         </Link>
 
@@ -31,7 +31,7 @@ export function Nav() {
                   to={l.to}
                   viewTransition
                   aria-current={isActive(l.to) ? 'page' : undefined}
-                  className={`link-grow transition-colors hover:text-fg ${isActive(l.to) ? 'text-fg' : ''}`}
+                  className={`tap-target link-grow transition-colors hover:text-fg ${isActive(l.to) ? 'text-fg' : ''}`}
                 >
                   {l.label}
                 </Link>

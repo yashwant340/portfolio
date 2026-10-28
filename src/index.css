@@ -79,6 +79,18 @@
     background-size: 100% 1px;
   }
 
+  /* Grows a small text link's tap area to at least 44px tall without changing its layout */
+  .tap-target {
+    position: relative;
+  }
+  .tap-target::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
   /* Cursor-following glow: the element sets --gx/--gy on pointer move */
   .glow {
     background: radial-gradient(
