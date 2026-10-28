@@ -3,19 +3,20 @@ import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
 import { Reveal } from '../components/Reveal'
 import { Shot } from '../components/Shot'
-import { projects, shippedProjects } from '../lib/content'
+import { profile, projects, shippedProjects } from '../lib/content'
 import { filled } from '../lib/todo'
 
 export function Projects() {
   const upcoming = projects.filter((p) => p.status === 'in-progress')
+  const section = profile.projectsSection
 
   return (
     <section id="projects" className="mx-auto max-w-[1120px] px-6 pt-28">
       <Reveal className="flex flex-wrap items-end justify-between gap-6">
-        <h2 className="text-[40px] font-bold tracking-[-0.03em]">Selected projects</h2>
+        <h2 className="text-[40px] font-bold tracking-[-0.03em]">{section.heading}</h2>
         <span className="text-sm text-muted">
-          {shippedProjects.length} shipped
-          {upcoming.length > 0 && ` · ${upcoming.length} in progress`}
+          {shippedProjects.length} {section.builtLabel}
+          {upcoming.length > 0 && ` · ${upcoming.length} ${section.inProgressLabel}`}
         </span>
       </Reveal>
 
