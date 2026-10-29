@@ -41,7 +41,7 @@ Shipped projects without a `links.live` URL show a "Live demo coming soon" badge
 
 ### CV
 
-Put the PDF at `public/cv.pdf` (or change `links.cv` in `profile.ts`).
+Put the PDF at `public/Yaswanth_Kumar_CV.pdf` (or change `links.cv` in `profile.ts`). Visitors download it under that file name.
 
 ## Deploying
 

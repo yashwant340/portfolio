@@ -6,10 +6,10 @@ export const profile: Profile = {
   headline: 'Full-stack engineer building reliable web apps.',
   intro:
     'Three years building Java, Spring Boot and React systems at Societe Generale, now doing an MSc in Computer Science at University College Dublin.',
-  status: { open: true, text: 'Open to full-time roles from late 2027 & summer 2027 internships · Dublin' },
+  status: { open: true, text: 'Open to full-time roles from late 2027 & summer 2027 internships · Dublin / Remote' },
   contact: {
     heading: 'Get in touch',
-    text: "I'm looking for full-time software engineering roles in Dublin from late 2027, and a summer 2027 internship. My inbox is open, so say hello and I'll get back to you.",
+    text: "I'm looking for full-time software engineering roles in Dublin or remote from late 2027, and a summer 2027 internship. Drop me a message. My response time beats most APIs.",
   },
   projectsSection: {
     heading: 'Projects',
@@ -21,7 +21,8 @@ export const profile: Profile = {
     note: "I'm deploying each project with a demo mode and sample data, so you'll be able to try it in your browser without signing up. Until then, the clips below show it in action.",
   },
   links: {
-    cv: '/cv.pdf',
+    // Downloads keep this file name
+    cv: '/Yaswanth_Kumar_CV.pdf',
     github: 'https://github.com/yashwant340',
     linkedin: 'https://www.linkedin.com/in/yaswanth-kumar-rs',
     email: 'rajiyash317@gmail.com',
