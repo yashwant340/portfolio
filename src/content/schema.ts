@@ -101,6 +101,10 @@ const inProgressProject = z.object({
   order: z.number(),
   title: text,
   summary: text,
+  // Optional preview details shown on the home strip until the full write-up exists
+  role: text.optional(),
+  services: z.array(text).optional(),
+  stack: z.array(text).optional(),
 })
 
 export const projectSchema = z.discriminatedUnion('status', [shippedProject, inProgressProject])
@@ -112,3 +116,4 @@ export type Journey = z.input<typeof journeySchema>
 export type Beyond = z.input<typeof beyondSchema>
 export type ProjectMeta = z.output<typeof projectSchema>
 export type ShippedProject = Extract<ProjectMeta, { status: 'shipped' }>
+export type InProgressProject = Extract<ProjectMeta, { status: 'in-progress' }>
