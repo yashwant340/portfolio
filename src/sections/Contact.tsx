@@ -24,7 +24,7 @@ export function Contact() {
             href={`mailto:${email}`}
             className="mt-10 inline-flex h-12 items-center rounded-lg border border-accent px-7 text-[15px] font-medium text-accent transition duration-200 hover:-translate-y-0.5 hover:bg-accent-soft motion-reduce:hover:translate-y-0"
           >
-            Say hello
+            {profile.contact.button}
           </a>
         )}
 

@@ -10,6 +10,7 @@ export const profile: Profile = {
   contact: {
     heading: 'Get in touch',
     text: "I'm looking for full-time software engineering roles in Dublin or remote from late 2027, and a summer 2027 internship. Drop me a message. My response time beats most APIs.",
+    button: 'Say Hello',
   },
   projectsSection: {
     heading: 'Projects',
@@ -17,8 +18,8 @@ export const profile: Profile = {
     inProgressLabel: 'in progress',
   },
   liveDemoSoon: {
-    label: 'Live demo coming soon',
-    note: "I'm deploying each project with a demo mode and sample data, so you'll be able to try it in your browser without signing up. Until then, the clips below show it in action.",
+    label: 'Try the live app · soon',
+    note: "Soon you'll be able to use the real app right here in your browser, with sample data and no sign-up. Until then, the clips below show it in action.",
   },
   links: {
     // Downloads keep this file name
