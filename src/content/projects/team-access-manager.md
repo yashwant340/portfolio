@@ -40,6 +40,11 @@ architecture:
     - title: SMTP email
       detail: Onboarding and password-reset mail
       link: Spring Mail
+decisions:
+  - title: One service, not microservices
+    body: Approving a request updates permissions and writes the audit entry in one database transaction. Split across services, keeping those consistent would need a saga or an outbox.
+  - title: Deactivate users, never delete them
+    body: Their audit history stays complete, and only active users count as team members.
 challenges:
   - title: Inherit or override, without side effects
     body: Users either inherit their team's permissions or get their own. When an inheriting user's request is approved, the team's current permissions are copied to that user and only the requested feature changes, so one person's exception never changes the whole team.

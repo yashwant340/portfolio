@@ -40,6 +40,13 @@ architecture:
     - title: GitHub API
       detail: OAuth, repos, PRs, commits
       link: REST, paginated
+decisions:
+  - title: One service, not microservices
+    body: Auth, sync and metrics share one database and one deploy. Nothing needs to scale on its own, and it fits a free hosting tier for the live app.
+  - title: API calls get a 401, page loads redirect
+    body: When a session expires, the React app gets a 401 it can act on, so it refreshes the token and retries instead of being bounced to GitHub mid-request.
+  - title: Daily snapshots, not recalculating on every visit
+    body: Each sync saves the day's metrics, so trends have history to draw on and the dashboard loads one saved row instead of recomputing.
 challenges:
   - title: Incremental sync
     body: The first sync imports the full commit history. Later syncs fetch only commits newer than the latest stored one, with a one-minute overlap and SHA de-duplication so nothing is missed or counted twice.
