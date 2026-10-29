@@ -13,7 +13,7 @@ export const profileSchema = z.object({
   headline: text,
   intro: text,
   status: z.object({ open: z.boolean(), text }),
-  contact: z.object({ heading: text, text }),
+  contact: z.object({ heading: text, text, button: text }),
   // Home projects section: heading and the counter beside it ("2 built · 1 in progress")
   projectsSection: z.object({ heading: text, builtLabel: text, inProgressLabel: text }),
   // Shown on shipped projects that have no `links.live` yet

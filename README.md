@@ -37,7 +37,7 @@ All text, links and projects live in `src/content/`. Components only read from t
 
 ### Live demos
 
-Shipped projects without a `links.live` URL show a "Live demo coming soon" badge and note; the wording is `liveDemoSoon` in `profile.ts`. Once a project is deployed, add `live: https://…` under its `links` and the badge becomes a **Live demo** button.
+Shipped projects without a `links.live` URL show a "Try the live app · soon" badge and note; the wording is `liveDemoSoon` in `profile.ts`. Once a project is deployed, add `live: https://…` under its `links` and the badge becomes a **Live demo** button.
 
 ### CV
 
