@@ -3,11 +3,13 @@ import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
 import { Reveal } from '../components/Reveal'
 import { Shot } from '../components/Shot'
+import { Tag } from '../components/Tag'
+import type { InProgressProject } from '../content/schema'
 import { profile, projects, shippedProjects } from '../lib/content'
 import { filled } from '../lib/todo'
 
 export function Projects() {
-  const upcoming = projects.filter((p) => p.status === 'in-progress')
+  const upcoming = projects.filter((p): p is InProgressProject & { html: string } => p.status === 'in-progress')
   const section = profile.projectsSection
 
   return (
@@ -75,16 +77,29 @@ export function Projects() {
       {upcoming.map((p) => (
         <Reveal
           key={p.slug}
-          className="mt-28 flex flex-wrap items-center justify-between gap-5 rounded-[20px] border border-dashed border-line px-8 py-7"
+          className="mt-28 flex flex-col-reverse items-start gap-4 rounded-[20px] border border-dashed border-line px-6 py-7 sm:flex-row sm:justify-between sm:gap-5 sm:px-8"
         >
-          <div className="flex items-center gap-5">
-            <span className="text-[13px] font-semibold text-accent">{String(p.order).padStart(2, '0')}</span>
-            <div>
+          <div className="flex min-w-0 flex-1 gap-5">
+            <span className="mt-1.5 text-[13px] font-semibold text-accent">{String(p.order).padStart(2, '0')}</span>
+            <div className="min-w-0">
               <div className="text-xl font-semibold tracking-tight">{p.title}</div>
-              <div className="mt-1 text-[15px] text-muted">{p.summary}</div>
+              {p.role && <div className="mt-1 text-[13px] font-semibold text-accent">{p.role}</div>}
+              <div className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-muted">{p.summary}</div>
+              {p.services && (
+                <div className="mt-3 text-[13px] text-muted">
+                  <span className="font-semibold text-fg">Services</span> · {p.services.join(' · ')}
+                </div>
+              )}
+              {p.stack && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {p.stack.map((s) => (
+                    <Tag key={s}>{s}</Tag>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <span className="rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold">In progress</span>
+          <span className="self-start rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold">In progress</span>
         </Reveal>
       ))}
     </section>
