@@ -91,6 +91,8 @@ const shippedProject = z.object({
     server: node,
     services: z.array(node.extend({ link: text })).min(1),
   }),
+  // Design choices and why, shown between Architecture and Key challenges
+  decisions: z.array(z.object({ title: text, body: text })).optional(),
   challenges: z.array(z.object({ title: text, body: text })).min(1),
   limitations: z.array(z.object({ issue: text, next: text })).min(1),
 })

@@ -146,6 +146,23 @@ export function ProjectPage() {
         </div>
       </Reveal>
 
+      {project.decisions && (
+        <section className="mt-24">
+          <Reveal>
+            <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key decisions</h2>
+          </Reveal>
+          <div className={`mt-8 grid gap-5 ${project.decisions.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+            {project.decisions.map((d, i) => (
+              <Reveal key={d.title} index={i} className="rounded-2xl border border-line bg-surface p-7">
+                <div className="text-[13px] font-semibold text-accent">{String(i + 1).padStart(2, '0')}</div>
+                <h3 className="mt-2.5 text-lg font-semibold tracking-tight">{d.title}</h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{d.body}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section className="mt-24">
         <Reveal>
           <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key challenges</h2>
