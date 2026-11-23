@@ -78,8 +78,14 @@ const shippedProject = z.object({
   links: z.object({
     frontend: url.optional(),
     backend: url.optional(),
+    // One repository holding the whole project
+    code: url.optional(),
     live: url.optional(),
   }),
+  // false hides the "Try the live app · soon" badge for a project that won't be hosted
+  liveSoon: z.boolean().default(true),
+  // Short line under the links, e.g. how to run the project locally
+  note: text.optional(),
   // Paths under /public, e.g. /projects/devmetrics/cover.png
   cover: text.optional(),
   preview: text.optional(),

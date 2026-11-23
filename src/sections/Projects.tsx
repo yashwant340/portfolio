@@ -68,7 +68,7 @@ export function Projects() {
                 <span className="link-grow">View project</span>
                 <ArrowRight className="size-4 transition-transform group-hover/cta:translate-x-1" />
               </Link>
-              {!filled(p.links.live) && <LiveSoon size="sm" />}
+              {p.liveSoon && !filled(p.links.live) && <LiveSoon size="sm" />}
             </div>
           </div>
         </Reveal>

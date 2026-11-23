@@ -50,8 +50,9 @@ export function ProjectPage() {
     { label: 'Live demo', href: filled(project.links.live) },
     { label: 'Frontend code', href: filled(project.links.frontend) },
     { label: 'Backend code', href: filled(project.links.backend) },
+    { label: 'Code', href: filled(project.links.code) },
   ].filter((l): l is { label: string; href: string } => !!l.href)
-  const liveSoon = !filled(project.links.live)
+  const liveSoon = project.liveSoon && !filled(project.links.live)
 
   return (
     <article className="mx-auto max-w-[1120px] px-6 pt-16 pb-24 sm:pt-[72px]">
@@ -91,7 +92,9 @@ export function ProjectPage() {
             ))}
           </div>
         </div>
-        {liveSoon && <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted">{profile.liveDemoSoon.note}</p>}
+        {(liveSoon || project.note) && (
+          <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted">{liveSoon ? profile.liveDemoSoon.note : project.note}</p>
+        )}
       </header>
 
       <section className="mt-[72px]" aria-label="Demo clips">
