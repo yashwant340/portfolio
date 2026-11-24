@@ -100,6 +100,20 @@ const shippedProject = z.object({
   // Design choices and why, shown between Architecture and Key challenges
   // `tradeoff` is what the choice cost; shown as a muted line under the reason
   decisions: z.array(z.object({ title: text, body: text, tradeoff: text.optional() })).optional(),
+  // Measured results: headline numbers, a p50/p99 latency chart and injected failures
+  results: z
+    .object({
+      intro: text.optional(),
+      stats: z.array(z.object({ value: text, label: text })).min(1).max(4),
+      latency: z
+        .object({
+          rows: z.array(z.object({ label: text, p50: z.number(), p99: z.number() })).min(1),
+          note: text.optional(),
+        })
+        .optional(),
+      failures: z.array(z.object({ failure: text, outcome: text })).optional(),
+    })
+    .optional(),
   challenges: z.array(z.object({ title: text, body: text })).min(1).optional(),
   limitations: z.array(z.object({ issue: text, next: text })).min(1).optional(),
 })

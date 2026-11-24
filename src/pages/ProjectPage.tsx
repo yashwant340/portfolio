@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
+import { Results } from '../components/Results'
 import { Reveal } from '../components/Reveal'
 import { Tag } from '../components/Tag'
 import { findProject, profile, shippedProjects } from '../lib/content'
@@ -171,6 +172,8 @@ export function ProjectPage() {
           </div>
         </section>
       )}
+
+      {project.results && <Results results={project.results} />}
 
       {project.challenges && (
         <section className="mt-24">

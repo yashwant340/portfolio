@@ -140,6 +140,17 @@
     transform: none;
   }
 
+  /* Chart bars that grow from the baseline when their .reveal parent appears */
+  .reveal .grow-bar {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s var(--ease-out-soft);
+    transition-delay: calc(var(--delay, 0ms) + var(--bar-delay, 0ms));
+  }
+  .reveal.is-visible .grow-bar {
+    transform: none;
+  }
+
   /* Child that pops in slightly after its .reveal parent */
   .reveal .pop {
     opacity: 0;
@@ -191,6 +202,7 @@
   .reveal,
   .reveal-line,
   .reveal .pop,
+  .reveal .grow-bar,
   .draw [pathLength] {
     opacity: 1;
     transform: none;

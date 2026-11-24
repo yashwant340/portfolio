@@ -54,6 +54,43 @@ decisions:
   - title: One service holds Docker, with a warm sandbox pool
     body: "Access to Docker is effectively root on the host, so only one small service gets it. Keeping a sandbox warm means submissions don't wait for a container to start."
     tradeoff: "An extra network hop for every test case, and an idle sandbox using memory."
+results:
+  intro: From the team's load and failure tests, run against the full system.
+  stats:
+    - value: "0"
+      label: submissions lost through a broker outage and a crash
+    - value: "0"
+      label: wrong scores with 30% of verdicts duplicated and shuffled
+    - value: 246 ms
+      label: from submit to verdict in the browser, p95 at peak
+    - value: 100%
+      label: of requests served with the login service down
+  latency:
+    rows:
+      - label: Gateway auth check
+        p50: 0.9
+        p99: 1.7
+      - label: Leaderboard update
+        p50: 1.0
+        p99: 2.8
+      - label: Submit request
+        p50: 18.9
+        p99: 83.1
+      - label: Login
+        p50: 46.7
+        p99: 75.4
+    note: Login is slow on purpose. Passwords are hashed with argon2id, which is designed to be expensive to brute-force.
+  failures:
+    - failure: RabbitMQ stopped
+      outcome: All 300 submissions still accepted
+    - failure: Submission service killed mid-burst
+      outcome: Every accepted submission judged
+    - failure: Catalog crashed mid-stream
+      outcome: Every score still correct
+    - failure: Login service down
+      outcome: 1,189 of 1,189 requests served
+    - failure: AI model stopped
+      outcome: Verdicts unaffected, hints resumed
 
 ---
 I wanted to see what it takes to run strangers' code safely and still answer quickly. Mini LeetCode is a small LeetCode-style judge for a class of about 150 students: pick a problem, try your code against the samples, submit, and watch the verdict arrive live.
