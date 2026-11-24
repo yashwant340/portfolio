@@ -78,8 +78,14 @@ const shippedProject = z.object({
   links: z.object({
     frontend: url.optional(),
     backend: url.optional(),
+    // One repository holding the whole project
+    code: url.optional(),
     live: url.optional(),
   }),
+  // false hides the "Try the live app · soon" badge for a project that won't be hosted
+  liveSoon: z.boolean().default(true),
+  // Short line under the links, e.g. how to run the project locally
+  note: text.optional(),
   // Paths under /public, e.g. /projects/devmetrics/cover.png
   cover: text.optional(),
   preview: text.optional(),
@@ -92,9 +98,24 @@ const shippedProject = z.object({
     services: z.array(node.extend({ link: text })).min(1),
   }),
   // Design choices and why, shown between Architecture and Key challenges
-  decisions: z.array(z.object({ title: text, body: text })).optional(),
-  challenges: z.array(z.object({ title: text, body: text })).min(1),
-  limitations: z.array(z.object({ issue: text, next: text })).min(1),
+  // `tradeoff` is what the choice cost; shown as a muted line under the reason
+  decisions: z.array(z.object({ title: text, body: text, tradeoff: text.optional() })).optional(),
+  // Measured results: headline numbers, a p50/p99 latency chart and injected failures
+  results: z
+    .object({
+      intro: text.optional(),
+      stats: z.array(z.object({ value: text, label: text })).min(1).max(4),
+      latency: z
+        .object({
+          rows: z.array(z.object({ label: text, p50: z.number(), p99: z.number() })).min(1),
+          note: text.optional(),
+        })
+        .optional(),
+      failures: z.array(z.object({ failure: text, outcome: text })).optional(),
+    })
+    .optional(),
+  challenges: z.array(z.object({ title: text, body: text })).min(1).optional(),
+  limitations: z.array(z.object({ issue: text, next: text })).min(1).optional(),
 })
 
 const inProgressProject = z.object({

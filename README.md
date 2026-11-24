@@ -37,7 +37,7 @@ All text, links and projects live in `src/content/`. Components only read from t
 
 ### Live demos
 
-Shipped projects without a `links.live` URL show a "Try the live app · soon" badge and note; the wording is `liveDemoSoon` in `profile.ts`. Once a project is deployed, add `live: https://…` under its `links` and the badge becomes a **Live demo** button.
+Shipped projects without a `links.live` URL show a "Try the live app · soon" badge and note; the wording is `liveDemoSoon` in `profile.ts`. Once a project is deployed, add `live: https://…` under its `links` and the badge becomes a **Live demo** button. For a project that won't be hosted, set `liveSoon: false` and add a `note` (for example, how to run it locally) instead. A project kept in one repository can use `links.code` for a single **Code** button.
 
 ### CV
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
+import { Results } from '../components/Results'
 import { Reveal } from '../components/Reveal'
 import { Tag } from '../components/Tag'
 import { findProject, profile, shippedProjects } from '../lib/content'
@@ -50,8 +51,9 @@ export function ProjectPage() {
     { label: 'Live demo', href: filled(project.links.live) },
     { label: 'Frontend code', href: filled(project.links.frontend) },
     { label: 'Backend code', href: filled(project.links.backend) },
+    { label: 'Code', href: filled(project.links.code) },
   ].filter((l): l is { label: string; href: string } => !!l.href)
-  const liveSoon = !filled(project.links.live)
+  const liveSoon = project.liveSoon && !filled(project.links.live)
 
   return (
     <article className="mx-auto max-w-[1120px] px-6 pt-16 pb-24 sm:pt-[72px]">
@@ -91,7 +93,9 @@ export function ProjectPage() {
             ))}
           </div>
         </div>
-        {liveSoon && <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted">{profile.liveDemoSoon.note}</p>}
+        {(liveSoon || project.note) && (
+          <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-muted">{liveSoon ? profile.liveDemoSoon.note : project.note}</p>
+        )}
       </header>
 
       <section className="mt-[72px]" aria-label="Demo clips">
@@ -151,44 +155,56 @@ export function ProjectPage() {
           <Reveal>
             <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key decisions</h2>
           </Reveal>
-          <div className={`mt-8 grid gap-5 ${project.decisions.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+          <div className={`mt-8 grid gap-5 ${project.decisions.length === 2 ? 'md:grid-cols-2' : 'lg:grid-cols-3'}`}>
             {project.decisions.map((d, i) => (
               <Reveal key={d.title} index={i} className="rounded-2xl border border-line bg-surface p-7">
                 <div className="text-[13px] font-semibold text-accent">{String(i + 1).padStart(2, '0')}</div>
                 <h3 className="mt-2.5 text-lg font-semibold tracking-tight">{d.title}</h3>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{d.body}</p>
+                {d.tradeoff && (
+                  <p className="mt-4 border-t border-line pt-4 text-sm leading-relaxed text-muted">
+                    <span className="font-semibold text-fg">Trade-off: </span>
+                    {d.tradeoff}
+                  </p>
+                )}
               </Reveal>
             ))}
           </div>
         </section>
       )}
 
-      <section className="mt-24">
-        <Reveal>
-          <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key challenges</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {project.challenges.map((c, i) => (
-            <Reveal key={c.title} index={i} className="rounded-2xl border border-line bg-surface p-7">
-              <div className="text-[13px] font-semibold text-accent">{String(i + 1).padStart(2, '0')}</div>
-              <h3 className="mt-2.5 text-lg font-semibold tracking-tight">{c.title}</h3>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{c.body}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {project.results && <Results results={project.results} />}
 
-      <Reveal as="section" className="mt-24">
-        <h2 className="text-[28px] font-bold tracking-[-0.02em]">Limitations &amp; next steps</h2>
-        <ul className="mt-6 border-t border-line">
-          {project.limitations.map((l) => (
-            <li key={l.issue} className="flex flex-wrap gap-4 border-b border-line py-[18px]">
-              <span className="flex-[1_1_280px] text-base font-medium">{l.issue}</span>
-              <span className="flex-[2_1_360px] text-[15px] leading-relaxed text-muted">{l.next}</span>
-            </li>
-          ))}
-        </ul>
-      </Reveal>
+      {project.challenges && (
+        <section className="mt-24">
+          <Reveal>
+            <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key challenges</h2>
+          </Reveal>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {project.challenges.map((c, i) => (
+              <Reveal key={c.title} index={i} className="rounded-2xl border border-line bg-surface p-7">
+                <div className="text-[13px] font-semibold text-accent">{String(i + 1).padStart(2, '0')}</div>
+                <h3 className="mt-2.5 text-lg font-semibold tracking-tight">{c.title}</h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{c.body}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {project.limitations && (
+        <Reveal as="section" className="mt-24">
+          <h2 className="text-[28px] font-bold tracking-[-0.02em]">Limitations &amp; next steps</h2>
+          <ul className="mt-6 border-t border-line">
+            {project.limitations.map((l) => (
+              <li key={l.issue} className="flex flex-wrap gap-4 border-b border-line py-[18px]">
+                <span className="flex-[1_1_280px] text-base font-medium">{l.issue}</span>
+                <span className="flex-[2_1_360px] text-[15px] leading-relaxed text-muted">{l.next}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      )}
 
       {next !== project && (
         <Reveal className="mt-24">
