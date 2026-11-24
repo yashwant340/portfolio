@@ -214,7 +214,7 @@ function Third({ project: p, index }: { project: ShippedWithHtml; index: number 
       as="article"
       index={2}
       {...cardProps}
-      className={`flex cursor-pointer flex-col self-start rounded-[28px] border border-line bg-surface p-6 sm:p-7 ${hoverLift}`}
+      className={`flex cursor-pointer flex-col rounded-[28px] border border-line bg-surface p-6 sm:p-7 ${hoverLift}`}
     >
       <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">
         {num(index)} · {p.category}
@@ -232,9 +232,10 @@ function Third({ project: p, index }: { project: ShippedWithHtml; index: number 
           tabIndex={-1}
           aria-hidden
           data-cursor="View"
-          className="mt-5 block overflow-hidden rounded-xl border border-line"
+          className="relative mt-5 block overflow-hidden rounded-xl border border-line lg:min-h-[200px] lg:flex-1"
         >
-          <img src={p.cover} alt="" className="block w-full" />
+          {/* On wide screens the screenshot fills the rest of the card, so it matches the card beside it */}
+          <img src={p.cover} alt="" className="block w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover lg:object-top-left" />
         </Link>
       )}
     </Reveal>
