@@ -1,6 +1,7 @@
 import { Capabilities } from '../sections/Capabilities'
 import { Contact } from '../sections/Contact'
 import { Hero } from '../sections/Hero'
+import { JourneyMap } from '../sections/JourneyMap'
 import { Projects } from '../sections/Projects'
 
 export function Home() {
@@ -9,6 +10,7 @@ export function Home() {
       <Hero />
       <Projects />
       <Capabilities />
+      <JourneyMap />
       <Contact />
     </>
   )

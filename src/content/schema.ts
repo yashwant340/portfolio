@@ -64,6 +64,8 @@ export const journeySchema = z.object({
         detail: text.optional(),
         // Employer or university; capabilities can cite it in `usedIn`
         org: text.optional(),
+        // Pin label on the home page journey map
+        place: text.optional(),
         state: z.enum(['past', 'current', 'next']).default('past'),
       }),
     )
