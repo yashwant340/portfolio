@@ -1,7 +1,14 @@
 ---
 status: shipped
 slug: mini-leetcode
-order: 3
+order: 1
+proof:
+  - value: "0"
+    label: submissions lost through a broker outage and a crash
+  - value: "246 ms"
+    label: from submit to verdict in the browser, p95 at peak
+  - value: "100%"
+    label: of requests served with the login service down
 title: Mini LeetCode
 category: Distributed systems
 summary: "A distributed code judge: submissions are queued and run in sandboxed containers, and an AI suggests hints when code fails."
