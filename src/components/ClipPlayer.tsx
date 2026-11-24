@@ -57,7 +57,7 @@ export function ClipPlayer({ project }: { project: ShippedProject }) {
             playsInline
             autoPlay={!paused}
             aria-label={item.title}
-            className="block aspect-[16/9] w-full object-cover"
+            className="block aspect-[2940/1414] w-full bg-black object-contain"
           />
         ) : (
           <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 px-6 text-center sm:aspect-[16/8]">
