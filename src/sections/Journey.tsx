@@ -13,9 +13,9 @@ const STEP_GAP = 220
 
 export function Journey() {
   return (
-    <section id="journey" className="mx-auto max-w-[1120px] px-6 pt-28">
+    <section id="journey" className="mx-auto max-w-[1180px] px-6 pt-24">
       <Reveal>
-        <h2 className="text-[28px] font-bold tracking-[-0.02em]">Journey</h2>
+        <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Journey</h2>
       </Reveal>
       <div className="relative mt-12">
         <Reveal
@@ -36,7 +36,7 @@ export function Journey() {
               >
                 {step.period}
               </div>
-              <div className="mt-1.5 text-[17px] font-semibold">{step.title}</div>
+              <div className="mt-1.5 font-serif text-[22px] leading-tight">{step.title}</div>
               {step.detail && <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{step.detail}</p>}
             </Reveal>
           ))}
