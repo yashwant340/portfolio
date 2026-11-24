@@ -13,7 +13,7 @@ export function Contact() {
   ].filter(Boolean) as { label: string; href: string; Icon: typeof GitHub; download?: boolean }[]
 
   return (
-    <section id="contact" className="closing-glow mt-28 border-t border-line px-6 pt-28 pb-24 text-center lg:pt-36 lg:pb-32">
+    <section id="contact" className="closing-glow mt-28 px-6 pt-28 pb-24 text-center lg:pt-36 lg:pb-32">
       <Reveal className="mx-auto max-w-[680px]">
         <div className="inline-block rounded-full bg-fg px-3.5 py-1.5 text-[13px] font-semibold text-bg">What's next?</div>
         <h2 className="mt-5 font-serif text-[clamp(48px,6vw,80px)] leading-none font-normal">{profile.contact.heading}</h2>
