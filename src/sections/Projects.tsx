@@ -1,3 +1,4 @@
+import type React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
@@ -9,6 +10,14 @@ import { profile, projects, shippedProjects, type ShippedWithHtml } from '../lib
 import { filled } from '../lib/todo'
 
 const num = (i: number) => String(i + 1).padStart(2, '0')
+// Clicking anywhere on a card opens its project, through the card's main link so the
+// paint wipe and keyboard behaviour stay the same; links and buttons inside keep their own action.
+const openCard = (e: React.MouseEvent<HTMLElement>) => {
+  if ((e.target as Element).closest('a, button')) return
+  e.currentTarget.querySelector<HTMLAnchorElement>('a[data-primary]')?.click()
+}
+const cardProps = { onClick: openCard, 'data-cursor': 'View' }
+
 const hoverLift = 'transition duration-500 ease-out-soft hover:-translate-y-1.5 motion-reduce:hover:translate-y-0'
 
 // Importance reads from contrast and size: the first project is the dark featured
@@ -84,6 +93,7 @@ function CaseLink({ project, label = 'View case study' }: { project: ShippedWith
     <Link
       to={`/projects/${project.slug}`}
       viewTransition
+      data-primary
       className="group/cta inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold underline underline-offset-4"
     >
       {label}
@@ -97,7 +107,8 @@ function Featured({ project: p }: { project: ShippedWithHtml }) {
   return (
     <Reveal
       as="article"
-      className="mt-10 grid items-center gap-8 rounded-[32px] bg-feature p-6 text-feature-fg shadow-[0_50px_80px_-50px_rgba(43,30,26,0.6)] sm:p-10 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:p-11"
+      {...cardProps}
+      className="mt-10 grid cursor-pointer items-center gap-8 rounded-[32px] bg-feature p-6 text-feature-fg shadow-[0_50px_80px_-50px_rgba(43,30,26,0.6)] sm:p-10 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:p-11"
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-3 text-xs font-bold tracking-[0.14em] uppercase">
@@ -130,6 +141,7 @@ function Featured({ project: p }: { project: ShippedWithHtml }) {
           <Link
             to={`/projects/${p.slug}`}
             viewTransition
+            data-primary
             className="inline-flex h-12 items-center gap-2 rounded-full bg-feature-accent px-[22px] text-[15px] font-semibold text-feature transition hover:-translate-y-0.5"
           >
             View case study <ArrowRight className="size-4" />
@@ -158,7 +170,8 @@ function Second({ project: p }: { project: ShippedWithHtml }) {
     <Reveal
       as="article"
       index={1}
-      className={`group relative flex flex-col overflow-hidden rounded-[28px] bg-sage px-6 pt-7 sm:px-9 sm:pt-9 ${hoverLift}`}
+      {...cardProps}
+      className={`group relative cursor-pointer flex flex-col overflow-hidden rounded-[28px] bg-sage px-6 pt-7 sm:px-9 sm:pt-9 ${hoverLift}`}
     >
       <div className="text-xs font-bold tracking-[0.14em] uppercase opacity-80">
         {num(1)} · {p.category}
@@ -200,7 +213,8 @@ function Third({ project: p, index }: { project: ShippedWithHtml; index: number 
     <Reveal
       as="article"
       index={2}
-      className={`flex flex-col self-start rounded-[28px] border border-line bg-surface p-6 sm:p-7 ${hoverLift}`}
+      {...cardProps}
+      className={`flex cursor-pointer flex-col self-start rounded-[28px] border border-line bg-surface p-6 sm:p-7 ${hoverLift}`}
     >
       <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">
         {num(index)} · {p.category}

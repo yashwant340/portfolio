@@ -52,16 +52,6 @@ export function Hero() {
 
         <IdBadge />
       </div>
-
-      <a
-        href="#projects"
-        className="absolute bottom-8 left-[max(24px,calc((100vw-1180px)/2+24px))] z-[2] hidden items-center gap-3 text-[13px] font-semibold lg:flex"
-      >
-        <span aria-hidden className="scroll-mouse">
-          <span />
-        </span>
-        Scroll to explore
-      </a>
     </section>
   )
 }

@@ -1,6 +1,6 @@
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
 
-type Props = {
+type Props = Omit<HTMLAttributes<HTMLElement>, 'style' | 'className' | 'children'> & {
   children?: ReactNode
   as?: 'div' | 'li' | 'section' | 'article'
   className?: string
@@ -23,6 +23,7 @@ export function Reveal({
   delay = 0,
   variant = 'rise',
   style,
+  ...rest
 }: Props) {
   const ref = useRef<HTMLElement>(null)
 
@@ -52,6 +53,7 @@ export function Reveal({
 
   return (
     <Tag
+      {...rest}
       ref={ref as never}
       className={`${variant === 'line' ? 'reveal-line' : 'reveal'} ${className}`}
       style={{ ...style, '--delay': `${index * 90 + delay}ms` } as CSSProperties}
