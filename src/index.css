@@ -430,6 +430,11 @@
     .journey-rail button.is-now::before { box-shadow: 0 0 0 4px var(--accent-soft); }
   }
 
+  /* Closing: cream fading into sage toward the bottom of the page */
+  .closing-glow {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 35%, var(--sage-soft) 100%);
+  }
+
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
   .tap-target {
     position: relative;
