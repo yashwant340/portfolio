@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { ShippedProject } from '../content/schema'
 import { Reveal } from './Reveal'
+import { decadeAbove, fmt, logPos } from '../lib/latency'
 
 type ResultsData = NonNullable<ShippedProject['results']>
 
@@ -44,13 +45,6 @@ function CountUp({ value }: { value: string }) {
   return <span ref={ref}>{value}</span>
 }
 
-// Latencies span ~1 ms to ~100 ms, so the chart uses a log scale: on a linear one
-// the fastest operations shrink to a couple of pixels. Each tick is 10x the last.
-const LOG_MIN = 0.5
-const logPos = (v: number, max: number) => (Math.log(Math.max(v, LOG_MIN) / LOG_MIN) / Math.log(max / LOG_MIN)) * 100
-const decadeAbove = (n: number) => 10 ** Math.ceil(Math.log10(n))
-
-const fmt = (n: number) => (n < 10 ? n.toFixed(1) : n.toFixed(1).replace(/\.0$/, ''))
 
 export function Results({ results }: { results: ResultsData }) {
   const { stats, latency, failures, intro } = results
@@ -60,7 +54,7 @@ export function Results({ results }: { results: ResultsData }) {
   return (
     <section className="mt-24">
       <Reveal>
-        <h2 className="text-[28px] font-bold tracking-[-0.02em]">Results</h2>
+        <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Results</h2>
         {intro && <p className="mt-3 max-w-[60ch] text-[15px] text-muted">{intro}</p>}
       </Reveal>
 

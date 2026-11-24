@@ -51,6 +51,55 @@ architecture:
     - title: Ollama
       detail: qwen2.5-coder:7b for hints
       link: HTTP
+# Story layout for the project page: one big number per chapter, text taken from the sections below
+story:
+  - type: overview
+    heading: "Running strangers' code, **safely**"
+    stat: { value: "150", label: students in the class it was built for }
+  - type: built
+    heading: "My three **parts**"
+    stat: { value: "3", label: parts of the system I built }
+    mine: true
+    items:
+      - title: Catalog & leaderboard service
+        body: Spring Boot, with versioned, immutable test sets and a leaderboard recomputed from verdicts.
+      - title: React frontend
+        body: TypeScript, with live verdicts over SSE.
+      - title: Observability
+        body: Prometheus scraping ten targets every 5 seconds, and nine Grafana dashboards covering queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use.
+  - type: architecture
+    heading: "Five services, one **queue**"
+    stat: { value: "5", label: services }
+  - type: decision
+    heading: "Recompute, don't **increment**"
+    stat: { value: "0", label: wrong scores with 30% of verdicts duplicated and shuffled }
+    mine: true
+    decisions: [1]
+  - type: decisions
+    heading: "What it **cost**"
+    stat: { value: "0", label: submissions lost through a broker outage and a crash }
+    decisions: [0, 2]
+  - type: latency
+    heading: "Where the time **goes**"
+    stat: { value: 246 ms, label: "from submit to verdict in the browser, p95 at peak" }
+    highlight: Leaderboard update
+  - type: failures
+    heading: "We broke it on **purpose**"
+    stat: { value: 5 / 5, label: "failures injected, all survived" }
+    highlight: Catalog crashed mid-stream
+# Detailed architecture map for the story layout; `mine` marks the parts I built
+diagram:
+  requestLabel: REST + SSE
+  client: { title: React app, detail: live verdicts, mine: true, info: "Editor and test runs, with the verdict streaming in over SSE." }
+  gateway: { title: Envoy gateway, detail: checks tokens once, info: "Checks every token once at the edge and routes to the services." }
+  services:
+    - { title: User, detail: login, info: "Login, with passwords hashed using argon2id." }
+    - { title: Submission, detail: outbox, queue: job, info: "Saves the submission and its judge job in one transaction, so nothing the API accepts is lost." }
+    - { title: AI explainer, detail: never decides, info: "A local model (qwen2.5-coder:7b on Ollama) explains failures. It never decides the verdict." }
+    - { title: Catalog, detail: leaderboard, mine: true, queue: verdict, info: "Versioned, immutable test sets, and a leaderboard recomputed from verdicts." }
+  queue: { title: RabbitMQ, detail: jobs · verdicts, info: "Job queue and verdict fan-out." }
+  worker: { title: Judge + Spawner, detail: "sandboxed runs, only one with Docker", info: "Stateless judge workers run each test case in a sandbox from the Spawner's warm pool. Only the Spawner holds Docker." }
+  observability: { title: Prometheus + Grafana, detail: 9 dashboards watching every box above, mine: true, info: "Prometheus scrapes ten targets every 5 seconds; nine Grafana dashboards cover queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use." }
 decisions:
   - title: Outbox, not publishing straight to the queue
     body: "A database write and a message publish can't share one transaction. Saving the job in the same transaction as the submission means nothing the API accepts is ever lost, even if the broker is down."

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight } from '../components/Icons'
 import { LiveSoon } from '../components/LiveSoon'
+import { ProjectStory } from '../components/ProjectStory'
 import { Results } from '../components/Results'
 import { Reveal } from '../components/Reveal'
 import { Tag } from '../components/Tag'
@@ -46,6 +47,7 @@ export function ProjectPage() {
 
   const index = shippedProjects.indexOf(project)
   const next = shippedProjects[(index + 1) % shippedProjects.length]
+  if (project.story) return <ProjectStory key={project.slug} project={project} featured={index === 0} next={next} />
   const { architecture: arch } = project
   const links = [
     { label: 'Live demo', href: filled(project.links.live) },
@@ -67,7 +69,7 @@ export function ProjectPage() {
           {project.category} · {project.role}
         </div>
         <h1
-          className="mt-3 text-[clamp(40px,5.5vw,64px)] leading-[1.05] font-bold tracking-[-0.035em]"
+          className="mt-3 font-serif text-[clamp(52px,7vw,88px)] leading-[0.95] font-normal"
           style={{ viewTransitionName: `title-${project.slug}` }}
         >
           {project.title}
@@ -119,7 +121,7 @@ export function ProjectPage() {
       </section>
 
       <Reveal as="section" className="mt-24">
-        <h2 className="text-[28px] font-bold tracking-[-0.02em]">Overview</h2>
+        <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Overview</h2>
         <div
           className="mt-4 max-w-[68ch] space-y-4 text-[17px] leading-[1.75] text-muted [&_a]:text-accent [&_a]:underline [&_strong]:text-fg"
           dangerouslySetInnerHTML={{ __html: project.html }}
@@ -127,7 +129,7 @@ export function ProjectPage() {
       </Reveal>
 
       <Reveal as="section" className="mt-24">
-        <h2 className="text-[28px] font-bold tracking-[-0.02em]">Architecture</h2>
+        <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Architecture</h2>
         <p className="mt-3 max-w-[64ch] text-base leading-[1.7] text-muted">{arch.summary}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center rounded-[20px] border border-line bg-surface px-8 py-10">
           <div className="w-[200px]">
@@ -153,7 +155,7 @@ export function ProjectPage() {
       {project.decisions && (
         <section className="mt-24">
           <Reveal>
-            <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key decisions</h2>
+            <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Key decisions</h2>
           </Reveal>
           <div className={`mt-8 grid gap-5 ${project.decisions.length === 2 ? 'md:grid-cols-2' : 'lg:grid-cols-3'}`}>
             {project.decisions.map((d, i) => (
@@ -178,7 +180,7 @@ export function ProjectPage() {
       {project.challenges && (
         <section className="mt-24">
           <Reveal>
-            <h2 className="text-[28px] font-bold tracking-[-0.02em]">Key challenges</h2>
+            <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Key challenges</h2>
           </Reveal>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {project.challenges.map((c, i) => (
@@ -194,7 +196,7 @@ export function ProjectPage() {
 
       {project.limitations && (
         <Reveal as="section" className="mt-24">
-          <h2 className="text-[28px] font-bold tracking-[-0.02em]">Limitations &amp; next steps</h2>
+          <h2 className="font-serif text-[clamp(34px,3.6vw,44px)] leading-none font-normal">Limitations &amp; next steps</h2>
           <ul className="mt-6 border-t border-line">
             {project.limitations.map((l) => (
               <li key={l.issue} className="flex flex-wrap gap-4 border-b border-line py-[18px]">
