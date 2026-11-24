@@ -81,6 +81,8 @@ const shippedProject = z.object({
   status: z.literal('shipped'),
   slug: text,
   order: z.number(),
+  // Up to three headline numbers for the home page card (taken from the write-up)
+  proof: z.array(z.object({ value: text, label: text })).min(1).max(3).optional(),
   title: text,
   category: text,
   summary: text,

@@ -1,7 +1,7 @@
 ---
 status: shipped
 slug: team-access-manager
-order: 2
+order: 3
 title: Team Access Manager
 category: Security & workflows
 summary: Role-based access control with team-inherited permissions, approval workflows and a full audit trail.
