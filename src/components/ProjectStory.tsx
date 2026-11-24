@@ -176,7 +176,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
           <p className="mx-auto mt-4 max-w-[46ch] leading-relaxed opacity-80">{profile.contact.text}</p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             {email && (
-              <a href={`mailto:${email}`} className="inline-flex h-12 items-center rounded-full bg-feature-accent px-[22px] text-[15px] font-semibold text-feature">
+              <a href={`mailto:${email}`} data-magnetic className="inline-flex h-12 items-center rounded-full bg-feature-accent px-[22px] text-[15px] font-semibold text-feature">
                 {profile.contact.button}
               </a>
             )}

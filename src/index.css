@@ -552,6 +552,33 @@
   .arch-node:focus-visible rect { stroke: var(--accent); stroke-width: 3.5; }
   .arch-dot { fill: var(--accent); }
 
+  /* Cursor ring: an accent that trails the normal pointer */
+  .cursor-ring {
+    position: fixed;
+    top: -18px;
+    left: -18px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--fg);
+    border-radius: 50%;
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .cursor-ring[data-state='hover'] { top: -27px; left: -27px; width: 54px; height: 54px; border-color: var(--accent); background: var(--accent-soft); }
+  .cursor-ring[data-state='label'] { top: -35px; left: -35px; width: 70px; height: 70px; border-color: var(--fg); background: var(--fg); }
+  [data-magnetic] { transition: transform 0.25s var(--ease-out-soft); }
+  @media (hover: none), (prefers-reduced-motion: reduce) {
+    .cursor-ring { display: none; }
+  }
+
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
   .tap-target {
     position: relative;
