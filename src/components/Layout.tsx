@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { Cursor } from './Cursor'
 import { Footer } from './Footer'
 import { Nav } from './Nav'
+import { PaintWipe } from './PaintWipe'
 
 // Scrolls to #section links (including from other pages) and to the top on page changes.
 function ScrollManager() {
@@ -31,6 +33,8 @@ export function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <PaintWipe />
+      <Cursor />
     </>
   )
 }

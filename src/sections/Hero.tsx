@@ -40,7 +40,7 @@ export function Hero() {
             <p className="mt-5 max-w-[44ch] text-[17px] leading-relaxed text-muted">{profile.intro}</p>
           </Reveal>
           <Reveal index={4} className="mt-8 flex flex-wrap gap-3">
-            <Button href={profile.links.cv} variant="primary" download>
+            <Button href={profile.links.cv} variant="primary" download magnetic>
               <Download className="size-4" />
               Download CV
             </Button>

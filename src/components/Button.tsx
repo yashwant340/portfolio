@@ -6,6 +6,8 @@ type Props = {
   variant?: 'primary' | 'ghost' | 'outline'
   size?: 'md' | 'lg'
   download?: boolean
+  /** Leans toward the pointer (see Cursor) */
+  magnetic?: boolean
 }
 
 const base =
@@ -17,12 +19,13 @@ const variants = {
 }
 const sizes = { md: 'h-11 px-[18px] text-sm', lg: 'h-12 px-[22px] text-[15px]' }
 
-export function Button({ href, children, variant = 'ghost', size = 'lg', download }: Props) {
+export function Button({ href, children, variant = 'ghost', size = 'lg', download, magnetic }: Props) {
   const external = /^https?:/.test(href)
   return (
     <a
       href={href}
       download={download || undefined}
+      data-magnetic={magnetic || undefined}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
       className={`${base} ${variants[variant]} ${sizes[size]}`}

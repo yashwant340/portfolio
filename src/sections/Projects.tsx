@@ -146,7 +146,7 @@ function Featured({ project: p }: { project: ShippedWithHtml }) {
           )}
         </div>
       </div>
-      <Link to={`/projects/${p.slug}`} viewTransition aria-label={`Open ${p.title}`} className={`block min-w-0 ${hoverLift}`}>
+      <Link to={`/projects/${p.slug}`} viewTransition aria-label={`Open ${p.title}`} data-cursor="View" className={`block min-w-0 ${hoverLift}`}>
         <Shot project={p} variant={0} />
       </Link>
     </Reveal>
@@ -185,6 +185,7 @@ function Second({ project: p }: { project: ShippedWithHtml }) {
           viewTransition
           tabIndex={-1}
           aria-hidden
+          data-cursor="View"
           className="mt-7 -mr-6 ml-6 block origin-bottom-right translate-y-2.5 -rotate-2 overflow-hidden rounded-tl-2xl border-t-[6px] border-l-[6px] border-white shadow-[-20px_-10px_40px_-20px_rgba(43,30,26,0.45)] transition-transform duration-500 ease-out-soft group-hover:translate-y-0 group-hover:rotate-0 sm:-mr-9 sm:ml-9"
         >
           <img src={p.cover} alt="" className="block w-full" />
@@ -216,6 +217,7 @@ function Third({ project: p, index }: { project: ShippedWithHtml; index: number 
           viewTransition
           tabIndex={-1}
           aria-hidden
+          data-cursor="View"
           className="mt-5 block overflow-hidden rounded-xl border border-line"
         >
           <img src={p.cover} alt="" className="block w-full" />

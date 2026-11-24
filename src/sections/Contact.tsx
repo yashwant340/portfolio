@@ -22,6 +22,7 @@ export function Contact() {
         {email && (
           <a
             href={`mailto:${email}`}
+            data-magnetic
             className="mt-9 inline-flex h-[52px] items-center rounded-full bg-accent px-8 text-base font-semibold text-accent-fg transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-10px_var(--accent)] motion-reduce:hover:translate-y-0"
           >
             {profile.contact.button}
