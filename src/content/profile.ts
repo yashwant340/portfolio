@@ -6,7 +6,7 @@ export const profile: Profile = {
   headline: "Hi, I'm **Yaswanth.**",
   intro:
     'Three years building Java, Spring Boot and React systems at Societe Generale, now doing an MSc in Computer Science at University College Dublin.',
-  status: { open: true, text: 'Open to full-time roles from late 2027 & summer 2027 internships · Dublin / Remote' },
+  status: { open: true, text: 'Open to summer 2027 internships & full-time roles from late 2027 · Dublin / Remote' },
   hero: {
     buildsLead: 'I build',
     builds: ['reliable APIs', 'distributed systems', 'full-stack apps'],
@@ -21,12 +21,12 @@ export const profile: Profile = {
       { label: 'Studying', value: 'MSc CS · UCD' },
       { label: 'Built', value: '3 projects' },
       { label: 'Based in', value: 'Dublin / Remote' },
-      { label: 'Available', value: 'Late 2027 · internship summer 2027' },
+      { label: 'Available', value: 'Internship summer 2027 · full-time late 2027' },
     ],
   },
   contact: {
     heading: 'Get in touch',
-    text: "I'm looking for full-time software engineering roles in Dublin or remote from late 2027, and a summer 2027 internship. Drop me a message. My response time beats most APIs.",
+    text: "I'm looking for a summer 2027 internship and full-time software engineering roles in Dublin or remote from late 2027. Drop me a message. My response time beats most APIs.",
     button: 'Say Hello',
   },
   projectCta: { heading: 'Like how I **build?**' },
