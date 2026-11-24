@@ -296,6 +296,10 @@
     .hint-touch { display: inline; }
   }
 
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
   .tap-target {
     position: relative;
