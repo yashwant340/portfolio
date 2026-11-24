@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Highlight } from '../components/Highlight'
 import { ArrowRight } from '../components/Icons'
 import { Reveal } from '../components/Reveal'
 import { about, profile } from '../lib/content'
-import { trackGlow } from '../lib/glow'
 import { Beyond } from '../sections/Beyond'
 import { Journey } from '../sections/Journey'
 
@@ -32,19 +32,17 @@ export function About() {
 
   return (
     <>
-      <section onMouseMove={trackGlow} className="relative overflow-hidden border-b border-line">
-        <div aria-hidden className="grid-bg absolute inset-0" />
-        <div aria-hidden className="glow absolute inset-0 [--glow-size:520px]" />
-        <div className="relative mx-auto max-w-[1120px] px-6 pt-24 pb-24 sm:pt-28">
+      <section className="hero-sunset relative overflow-hidden border-b border-line">
+        <div className="relative mx-auto max-w-[1180px] px-6 pt-20 pb-24 sm:pt-24">
           <Reveal>
-            <div className="text-[13px] font-semibold text-accent">About</div>
+            <div className="text-xs font-bold tracking-[0.16em] text-accent uppercase">About</div>
           </Reveal>
           <Reveal delay={120}>
-            <h1 className="mt-4 text-[clamp(36px,5vw,56px)] leading-[1.05] font-bold tracking-[-0.035em]">
-              Hi, I'm {firstName}.
+            <h1 className="mt-4 font-serif text-[clamp(54px,6.6vw,96px)] leading-[0.95] font-normal">
+              <Highlight text={`Hi, I'm **${firstName}.**`} />
             </h1>
           </Reveal>
-          <div className="mt-10 flex flex-wrap gap-x-16 gap-y-12">
+          <div className="mt-10 flex flex-wrap items-start gap-x-16 gap-y-12">
             <div className="flex-[3_1_420px] space-y-5">
               {about.paragraphs.map((p, i) => (
                 <Reveal key={i} delay={280 + i * 140}>
@@ -54,14 +52,18 @@ export function About() {
                 </Reveal>
               ))}
             </div>
-            <dl className="flex-[2_1_280px] self-start border-t border-line">
-              {about.facts.map((f, i) => (
-                <Reveal key={f.label} delay={420 + i * 110} className="border-b border-line py-4">
-                  <dt className="text-[13px] text-muted">{f.label}</dt>
-                  <dd className="mt-1 text-[15px] font-medium leading-snug">{f.value}</dd>
-                </Reveal>
-              ))}
-            </dl>
+            {/* Quick facts on the dark surface the site uses for "look here first" */}
+            <Reveal delay={420} className="flex-[2_1_300px] self-start">
+              <dl className="rounded-[28px] bg-feature p-6 text-feature-fg shadow-[0_50px_80px_-50px_rgba(43,30,26,0.6)] sm:p-8">
+                <div className="mb-2 text-xs font-bold tracking-[0.16em] text-feature-accent uppercase">Quick facts</div>
+                {about.facts.map((f) => (
+                  <div key={f.label} className="border-b border-current/15 py-3.5 last:border-b-0">
+                    <dt className="text-[13px] opacity-70">{f.label}</dt>
+                    <dd className="mt-1 text-[15px] leading-snug font-medium">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -69,16 +71,23 @@ export function About() {
       <Journey />
       <Beyond />
 
-      <section className="mx-auto max-w-[1120px] px-6 pt-28 pb-28">
-        <Reveal className="flex flex-wrap items-center justify-between gap-6 border-t border-line pt-10">
-          <p className="text-[17px] text-muted">Want to see what I've built, or talk about a role?</p>
-          <div className="flex flex-wrap gap-6 text-[15px] font-semibold">
-            <Link to="/#projects" className="group inline-flex min-h-11 items-center gap-2 text-fg">
-              <span className="link-grow">See my work</span>
+      <section className="mx-auto max-w-[1180px] px-6 pt-24 pb-24">
+        <Reveal className="flex flex-wrap items-center justify-between gap-6 rounded-[32px] bg-feature px-7 py-10 text-feature-fg sm:px-11 sm:py-12">
+          <p className="max-w-[30ch] font-serif text-[clamp(28px,3vw,40px)] leading-tight">Want to see what I've built, or talk about a role?</p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to="/#projects"
+              data-magnetic
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-feature-accent px-[22px] text-[15px] font-semibold text-feature"
+            >
+              See my work
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link to="/#contact" className="group inline-flex min-h-11 items-center gap-2 text-accent">
-              <span className="link-grow">Get in touch</span>
+            <Link
+              to="/#contact"
+              className="group inline-flex h-12 items-center gap-2 rounded-full border-[1.5px] border-current/35 px-[22px] text-[15px] font-semibold"
+            >
+              Get in touch
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
