@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 type Props = {
   href: string
   children: ReactNode
-  variant?: 'primary' | 'ghost'
+  variant?: 'primary' | 'ghost' | 'outline'
   size?: 'md' | 'lg'
   download?: boolean
 }
@@ -13,6 +13,7 @@ const base =
 const variants = {
   primary: 'bg-accent text-accent-fg font-semibold hover:shadow-[0_10px_24px_-10px_var(--accent)]',
   ghost: 'border border-line bg-surface hover:border-accent',
+  outline: 'border-[1.5px] border-fg/30 text-fg hover:border-fg',
 }
 const sizes = { md: 'h-11 px-[18px] text-sm', lg: 'h-12 px-[22px] text-[15px]' }
 

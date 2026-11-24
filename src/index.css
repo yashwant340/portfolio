@@ -96,6 +96,206 @@
     background-size: 100% 1px;
   }
 
+  /* Hero: cream melting into sage on the right (down the page on phones) */
+  .hero-sunset {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 46%, var(--sage-soft) 62%, var(--sage) 80%);
+  }
+  @media (min-width: 1024px) {
+    .hero-sunset {
+      background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 40%, var(--sage-soft) 60%, var(--sage) 76%);
+    }
+  }
+  .scroll-mouse {
+    display: flex;
+    justify-content: center;
+    width: 24px;
+    height: 38px;
+    padding-top: 6px;
+    border: 2px solid currentColor;
+    border-radius: 14px;
+  }
+  .scroll-mouse span {
+    width: 4px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: wheel 1.6s ease-in-out infinite;
+  }
+  @keyframes wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    70% { transform: translateY(12px); opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* ID badge on a lanyard. Fixed light colours: it is a physical card in both themes. */
+  .badge-stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 600px;
+  }
+  @media (min-width: 1024px) {
+    .badge-stage { height: calc(86vh - 64px); min-height: 640px; }
+  }
+  .badge-lanyard {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 0;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+    border-radius: 24px;
+  }
+  .badge-lanyard:active { cursor: grabbing; }
+  .badge-strap {
+    width: 22px;
+    height: 120px;
+    border-radius: 0 0 4px 4px;
+    background: repeating-linear-gradient(180deg, #b34a1b 0 18px, #d4693a 18px 20px);
+  }
+  @media (min-width: 1024px) {
+    .badge-strap { height: 16vh; }
+  }
+  .badge-clip {
+    width: 34px;
+    height: 20px;
+    margin-top: -2px;
+    border: 2px solid #9aa0aa;
+    border-radius: 4px;
+    background: #b8bcc4;
+  }
+  .badge-card {
+    width: 260px;
+    height: 372px;
+    margin-top: -4px;
+    perspective: 1200px;
+  }
+  @media (min-width: 1024px) {
+    .badge-card { width: 300px; height: 420px; }
+  }
+  .badge-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.3, 1.2, 0.4, 1);
+  }
+  .badge-card.is-flipped .badge-inner { transform: rotateY(180deg); }
+  .badge-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e4dccb;
+    border-radius: 22px;
+    background: #fff;
+    color: #2b1e1a;
+    box-shadow: 0 40px 70px -30px rgb(43 30 26 / 0.55);
+    backface-visibility: hidden;
+  }
+  .badge-back { transform: rotateY(180deg); }
+  .badge-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #2b1e1a;
+    color: #f7f1e6;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .badge-photo {
+    width: 140px;
+    height: 160px;
+    margin: 16px auto 10px;
+    overflow: hidden;
+    border: 4px solid #f7f1e6;
+    border-radius: 16px;
+    background: #cfd8c4;
+  }
+  @media (min-width: 1024px) {
+    .badge-photo { width: 170px; height: 190px; margin-top: 18px; }
+  }
+  .badge-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+    transform: scale(1.75);
+    transform-origin: 50% 6%;
+    pointer-events: none;
+  }
+  .badge-idrow {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px 0;
+    color: #b34a1b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-barcode {
+    height: 34px;
+    margin: auto 22px 18px;
+    border-radius: 3px;
+    background: repeating-linear-gradient(90deg, #2b1e1a 0 2px, #fff 2px 4px, #2b1e1a 4px 7px, #fff 7px 9px);
+  }
+  .badge-facts {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 16px 20px 8px;
+  }
+  .badge-facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #e4dccb;
+    font-size: 13px;
+  }
+  .badge-facts dt { color: #5d4f48; white-space: nowrap; }
+  .badge-facts dd { margin: 0; font-weight: 700; text-align: right; }
+  .badge-links {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 16px;
+  }
+  .badge-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1.5px solid rgb(43 30 26 / 0.25);
+    border-radius: 999px;
+    color: #2b1e1a;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .badge-btn.is-primary { border-color: #b34a1b; background: #b34a1b; color: #f7f1e6; }
+  .badge-hint {
+    position: absolute;
+    bottom: 3%;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .hint-touch { display: none; }
+  @media (hover: none) {
+    .hint-fine { display: none; }
+    .hint-touch { display: inline; }
+  }
+
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
   .tap-target {
     position: relative;

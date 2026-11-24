@@ -13,6 +13,19 @@ export const profileSchema = z.object({
   headline: text,
   intro: text,
   status: z.object({ open: z.boolean(), text }),
+  // Hero: the headline's **highlighted** words are set in italic accent; the line under it rotates through `builds`
+  hero: z.object({
+    buildsLead: text,
+    builds: z.array(text).min(1).max(5),
+    workButton: text,
+  }),
+  // The swinging ID badge in the hero; the back lists quick facts and links
+  badge: z.object({
+    top: text,
+    bottomLeft: text,
+    bottomRight: text,
+    facts: z.array(z.object({ label: text, value: text })).min(1).max(6),
+  }),
   contact: z.object({ heading: text, text, button: text }),
   // Home projects section: heading and the counter beside it ("2 built · 1 in progress")
   projectsSection: z.object({ heading: text, builtLabel: text, inProgressLabel: text }),

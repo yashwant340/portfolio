@@ -1,40 +1,67 @@
 import { Button } from '../components/Button'
 import { Download } from '../components/Icons'
+import { IdBadge } from '../components/IdBadge'
 import { Reveal } from '../components/Reveal'
+import { RotatingWord } from '../components/RotatingWord'
 import { profile } from '../lib/content'
-import { trackGlow } from '../lib/glow'
-import { filled } from '../lib/todo'
+
+// Renders **highlighted** words in italic accent
+function headline(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 ? (
+      <i key={i} className="text-accent">
+        {part}
+      </i>
+    ) : (
+      part
+    ),
+  )
+}
 
 export function Hero() {
-  const linkedin = filled(profile.links.linkedin)
   return (
-    <section id="top" onMouseMove={trackGlow} className="relative overflow-hidden border-b border-line">
-      <div aria-hidden className="grid-bg absolute inset-0" />
-      <div aria-hidden className="glow absolute inset-0 [--glow-size:520px]" />
-      <div className="relative mx-auto max-w-[1120px] px-6 pt-24 pb-20 sm:pt-32 sm:pb-28">
-        {profile.status.open && (
-          <Reveal className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-[13px] text-muted">
-            <span aria-hidden className="size-2 rounded-full bg-accent" />
-            {profile.status.text}
+    <section id="top" className="hero-sunset relative overflow-hidden border-b border-line">
+      <div className="mx-auto grid max-w-[1180px] items-center px-6 lg:min-h-[calc(86vh-64px)] lg:grid-cols-2">
+        <div className="relative z-[2] pt-16 pb-6 lg:py-20">
+          {profile.status.open && (
+            <Reveal className="inline-block rounded-2xl bg-fg px-3.5 py-1.5 text-[13px] leading-snug text-bg sm:rounded-full">
+              {profile.status.text}
+            </Reveal>
+          )}
+          <Reveal index={1}>
+            <h1 className="mt-6 font-serif text-[clamp(54px,6.6vw,96px)] leading-[0.98] font-normal tracking-[-0.01em]">
+              {headline(profile.headline)}
+            </h1>
           </Reveal>
-        )}
-        <Reveal index={1}>
-          <h1 className="mt-7 max-w-[14ch] text-[clamp(40px,6vw,72px)] leading-[1.04] font-bold tracking-[-0.035em]">
-            {profile.headline}
-          </h1>
-        </Reveal>
-        <Reveal index={2}>
-          <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">{profile.intro}</p>
-        </Reveal>
-        <Reveal index={3} className="mt-9 flex flex-wrap gap-3">
-          <Button href={profile.links.cv} variant="primary" download>
-            <Download className="size-4" />
-            Download CV
-          </Button>
-          <Button href={profile.links.github}>GitHub</Button>
-          {linkedin && <Button href={linkedin}>LinkedIn</Button>}
-        </Reveal>
+          <Reveal index={2} className="mt-4">
+            <RotatingWord lead={profile.hero.buildsLead} words={profile.hero.builds} />
+          </Reveal>
+          <Reveal index={3}>
+            <p className="mt-5 max-w-[44ch] text-[17px] leading-relaxed text-muted">{profile.intro}</p>
+          </Reveal>
+          <Reveal index={4} className="mt-8 flex flex-wrap gap-3">
+            <Button href={profile.links.cv} variant="primary" download>
+              <Download className="size-4" />
+              Download CV
+            </Button>
+            <Button href="#projects" variant="outline">
+              {profile.hero.workButton}
+            </Button>
+          </Reveal>
+        </div>
+
+        <IdBadge />
       </div>
+
+      <a
+        href="#projects"
+        className="absolute bottom-8 left-[max(24px,calc((100vw-1180px)/2+24px))] z-[2] hidden items-center gap-3 text-[13px] font-semibold lg:flex"
+      >
+        <span aria-hidden className="scroll-mouse">
+          <span />
+        </span>
+        Scroll to explore
+      </a>
     </section>
   )
 }
