@@ -6,6 +6,8 @@ import { Close, Menu, Moon, Sun } from './Icons'
 
 const links = [
   { to: '/#projects', label: 'Work' },
+  { to: '/#skills', label: 'Skills' },
+  { to: '/#journey', label: 'Journey' },
   { to: '/about', label: 'About' },
   { to: '/#contact', label: 'Contact' },
 ]

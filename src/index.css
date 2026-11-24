@@ -300,6 +300,136 @@
     from { opacity: 0; transform: translateY(8px); }
   }
 
+  /* Journey: pinned while you scroll; each step owns an equal slice of the track */
+  .journey-track {
+    position: relative;
+    height: calc(var(--steps) * 75vh + 100vh);
+    margin-top: 80px;
+  }
+  .journey-stage {
+    position: sticky;
+    top: 64px;
+    display: grid;
+    align-content: center;
+    gap: 12px;
+    height: calc(100vh - 64px);
+  }
+  .journey-left {
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: end;
+  }
+  .journey-eyebrow { grid-column: 1 / -1; }
+  .journey-pop {
+    position: relative;
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    width: 118px;
+    height: 146px;
+    margin-top: 44px;
+    perspective: 900px;
+  }
+  .journey-pop-frame {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--fg);
+    border-radius: 16px;
+    background: var(--sage-soft);
+    box-shadow: 6px 6px 0 var(--accent);
+    transform: rotateY(calc(var(--tx, 0) * 14deg)) rotateX(calc(var(--ty, 0) * -10deg));
+    transition: transform 0.25s ease-out;
+  }
+  .journey-pop-img {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 150px;
+    max-width: none;
+    clip-path: inset(-40% 12px 0 12px round 0 0 14px 14px);
+    filter: drop-shadow(0 14px 14px rgb(0 0 0 / 0.18));
+    transform: translateX(calc(-50% + var(--tx, 0) * 22px)) translateY(calc(var(--ty, 0) * 10px));
+    transition: transform 0.25s ease-out;
+  }
+  .journey-chapter { display: contents; }
+  .journey-chapter > * { animation: panel-in 0.4s var(--ease-out-soft); }
+  .journey-year { grid-column: 2; grid-row: 2; align-self: end; font-size: 56px; line-height: 0.9; }
+  .journey-title { grid-column: 2; grid-row: 3; margin-top: 6px; font-size: 21px; line-height: 1.15; }
+  .journey-detail { grid-column: 1 / -1; grid-row: 4; margin-top: 12px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .journey-land { font-size: 2.2px; font-weight: 700; letter-spacing: 0.3px; fill: var(--muted); }
+  .route-base, .route-draw { fill: none; stroke-width: 0.7; stroke-linecap: round; }
+  .route-base { stroke: color-mix(in srgb, var(--fg) 18%, transparent); }
+  .route-base.is-dashed { stroke-dasharray: 1.4 1.4; }
+  .route-draw { stroke: var(--accent); stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .route-plane { fill: var(--accent); transition: opacity 0.3s; }
+  .journey-pin circle { fill: var(--bg); stroke: color-mix(in srgb, var(--fg) 35%, transparent); stroke-width: 0.6; transition: fill 0.3s, stroke 0.3s; }
+  .journey-pin.is-next circle { stroke-dasharray: 1 0.8; }
+  .journey-pin text { font-size: 2.6px; font-weight: 700; fill: var(--muted); transition: fill 0.3s; }
+  .journey-pin.is-on circle { fill: var(--accent); stroke: var(--accent); }
+  .journey-pin.is-on text { fill: var(--fg); }
+  .journey-pin.is-now circle { animation: pin-pulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes pin-pulse { 50% { transform: scale(1.35); } }
+  .journey-rail { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .journey-rail li { flex: 1; }
+  .journey-rail button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .journey-rail button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .journey-rail button.is-done { border-color: var(--accent); color: var(--fg); }
+  .journey-rail button.is-now { background: var(--accent); color: var(--accent-fg); }
+  @media (min-width: 1024px) {
+    .journey-track { height: calc(var(--steps) * 85vh + 100vh); margin-top: 110px; }
+    .journey-stage { grid-template-columns: 300px minmax(0, 1fr) 230px; gap: 36px; align-items: center; }
+    .journey-left { display: block; }
+    .journey-pop { width: 250px; height: 310px; margin: 46px 0 22px; }
+    .journey-pop-frame { border-width: 3px; border-radius: 24px; box-shadow: 10px 10px 0 var(--accent); }
+    .journey-pop-img { bottom: 3px; width: 300px; clip-path: inset(-40% 22px 0 22px round 0 0 21px 21px); }
+    .journey-chapter { display: block; }
+    .journey-year { font-size: clamp(56px, 6vw, 88px); }
+    .journey-title { margin: 8px 0 6px; font-size: 24px; }
+    .journey-detail { max-width: 32ch; margin-top: 0; }
+    .journey-rail { display: grid; gap: 6px; padding-left: 18px; border-left: 2px solid var(--line); }
+    .journey-rail button {
+      position: relative;
+      justify-content: flex-start;
+      gap: 10px;
+      min-height: 40px;
+      padding: 4px 0;
+      border: 0;
+      border-radius: 0;
+      font-size: 14px;
+      text-align: left;
+    }
+    .journey-rail button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -25px;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--line);
+      border-radius: 50%;
+      background: var(--bg);
+      transform: translateY(-50%);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .journey-rail button b { min-width: 44px; color: var(--fg); }
+    .journey-rail button span { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+    .journey-rail button.is-done::before { border-color: var(--accent); background: var(--accent); }
+    .journey-rail button.is-now { background: transparent; color: var(--fg); font-weight: 600; }
+    .journey-rail button.is-now::before { box-shadow: 0 0 0 4px var(--accent-soft); }
+  }
+
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
   .tap-target {
     position: relative;
