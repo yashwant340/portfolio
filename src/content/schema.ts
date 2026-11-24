@@ -43,6 +43,8 @@ export const capabilitySchema = z.object({
   title: text,
   description: text,
   tools: z.array(text).min(1),
+  // Optional headline number shown large in the skills spotlight
+  stat: z.object({ value: text, label: text }).optional(),
   // Project slugs (src/content/projects/*.md) or an `org` from journey.ts
   usedIn: z.array(text).min(1),
 })

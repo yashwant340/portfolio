@@ -6,6 +6,7 @@ export const capabilities: Capability[] = [
     description:
       'Cut a bank-wide tool’s API from 3 minutes to under 2 seconds over 60k-row views, made exports 14x faster, and replaced a legacy ETL with a Spring Batch service.',
     tools: ['Spring Boot', 'Spring Batch', 'PostgreSQL', 'Materialised views', 'Server-side pagination'],
+    stat: { value: '3 min → 2 s', label: 'bank-wide API over 60k-row views' },
     usedIn: ['Societe Generale'],
   },
   {
@@ -13,18 +14,28 @@ export const capabilities: Capability[] = [
     description:
       'Led the cleanup of 3,000 SonarQube issues across five repositories and raised test coverage from 40% to 85% with reusable test templates.',
     tools: ['SonarQube', 'JUnit', 'Mockito', 'GitHub Actions'],
+    stat: { value: '40% → 85%', label: 'test coverage across five repositories' },
     usedIn: ['Societe Generale'],
+  },
+  {
+    title: 'Fault-tolerant distributed services',
+    description: 'Queues, an outbox and idempotent consumers, so work survives crashes and restarts.',
+    tools: ['RabbitMQ', 'Go', 'Docker'],
+    stat: { value: '0', label: 'submissions lost through a broker outage and a crash' },
+    usedIn: ['mini-leetcode'],
   },
   {
     title: 'Secure sign-in flows',
     description: 'OAuth logins, short-lived tokens with silent refresh, OTP password recovery with lockouts.',
     tools: ['Spring Security', 'OAuth2', 'JWT', 'httpOnly cookies', 'BCrypt'],
+    stat: { value: '15 min', label: 'access tokens, refreshed silently' },
     usedIn: ['devmetrics', 'team-access-manager'],
   },
   {
     title: 'Syncing external data',
     description: 'Pulling paginated data from third-party APIs, incrementally, without duplicates.',
     tools: ['Spring Boot', 'WebClient', 'GitHub REST API', 'Scheduled jobs'],
+    stat: { value: '6 h', label: 'between automatic syncs' },
     usedIn: ['devmetrics'],
   },
   {
