@@ -23,12 +23,15 @@ links:
   code: https://github.com/Yeswanth03/distributed-judge-engine
 liveSoon: false
 note: "Runs locally with one docker compose up. The README covers the quick start."
-# cover: /projects/mini-leetcode/cover.png
-# preview: /projects/mini-leetcode/preview.mp4
+cover: /projects/mini-leetcode/cover.png
+preview: /projects/mini-leetcode/preview.mp4
 clips:
   - title: Submit and watch the verdict stream in
+    src: /projects/mini-leetcode/clip-submit.mp4
   - title: An AI hint on a failed submission
+    src: /projects/mini-leetcode/clip-hint.mp4
   - title: A judge worker crashes and the system recovers
+    src: /projects/mini-leetcode/clip-recover.mp4
 architecture:
   summary: "A React app talks to an Envoy gateway, which checks tokens once and routes to five services. Submissions flow through RabbitMQ to stateless judge workers, which run each test case in a sandbox from the Spawner; verdicts fan back out to the services that need them."
   client:
