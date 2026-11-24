@@ -71,7 +71,7 @@
     scroll-padding-top: 80px;
   }
   body {
-    @apply bg-bg text-fg font-sans antialiased;
+    @apply text-fg font-sans antialiased;
     transition:
       background-color 0.4s ease,
       color 0.4s ease;
@@ -81,6 +81,21 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
+}
+
+/* One soft sage glow fixed behind every page, so the hero's sunset carries on as you scroll */
+html {
+  background-color: var(--bg);
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 75% at 100% 18%, color-mix(in srgb, var(--sage) 70%, transparent) 0%, color-mix(in srgb, var(--sage-soft) 55%, transparent) 38%, transparent 72%),
+    radial-gradient(45% 45% at 0% 100%, color-mix(in srgb, var(--sage-soft) 55%, transparent) 0%, transparent 70%);
 }
 
 @layer components {
@@ -96,13 +111,25 @@
     background-size: 100% 1px;
   }
 
-  /* Hero: cream melting into sage on the right (down the page on phones) */
+  /* Hero: cream melting into sage on the right (down the page on phones). The sunset sits on
+     its own layer that fades out at the bottom, so the hero dissolves into the page glow below. */
   .hero-sunset {
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-sunset::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 46%, var(--sage-soft) 62%, var(--sage) 80%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    pointer-events: none;
   }
   @media (min-width: 1024px) {
-    .hero-sunset {
+    .hero-sunset::before {
       background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 40%, var(--sage-soft) 60%, var(--sage) 76%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
     }
   }
 
@@ -397,7 +424,7 @@
 
   /* Closing: cream fading into sage toward the bottom of the page */
   .closing-glow {
-    background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 35%, var(--sage-soft) 100%);
+    background: linear-gradient(180deg, transparent 0%, transparent 35%, var(--sage-soft) 100%);
   }
 
   /* Project story: a pinned number panel beside scrolling chapters */

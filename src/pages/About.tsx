@@ -32,7 +32,7 @@ export function About() {
 
   return (
     <>
-      <section className="hero-sunset relative overflow-hidden border-b border-line">
+      <section className="hero-sunset overflow-hidden">
         <div className="relative mx-auto max-w-[1180px] px-6 pt-20 pb-24 sm:pt-24">
           <Reveal>
             <div className="text-xs font-bold tracking-[0.16em] text-accent uppercase">About</div>

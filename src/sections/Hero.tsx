@@ -20,7 +20,7 @@ function headline(text: string) {
 
 export function Hero() {
   return (
-    <section id="top" className="hero-sunset relative overflow-hidden border-b border-line">
+    <section id="top" className="hero-sunset overflow-hidden">
       <div className="mx-auto grid max-w-[1180px] items-center px-6 lg:min-h-[calc(86vh-64px)] lg:grid-cols-2">
         <div className="relative z-[2] pt-16 pb-6 lg:py-20">
           {profile.status.open && (
