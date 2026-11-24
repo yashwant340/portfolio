@@ -10,7 +10,7 @@ export const about: About = {
     { label: 'Based in', value: 'Dublin, Ireland' },
     { label: 'Experience', value: '3 years · Societe Generale' },
     { label: 'Studying', value: 'MSc Computer Science, UCD (to Sep 2027)' },
-    { label: 'Looking for', value: 'Full-time roles from late 2027, plus a summer 2027 internship' },
+    { label: 'Looking for', value: 'A summer 2027 internship, then full-time roles from late 2027' },
     {
       label: 'Work authorisation',
       value: 'Stamp 2 now · Stamp 1G from late 2027 · Eligible for a Critical Skills permit',

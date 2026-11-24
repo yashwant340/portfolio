@@ -26,9 +26,9 @@ export const journey: Journey = {
     },
     {
       period: 'Next',
-      title: 'Full-time engineering role · Dublin / Remote',
+      title: 'Internship & full-time role · Dublin / Remote',
       place: 'Your team?',
-      detail: 'From late 2027, plus a summer 2027 internship as my final term.',
+      detail: 'A summer 2027 internship as my final term, then full-time from late 2027.',
       state: 'next',
     },
   ],
