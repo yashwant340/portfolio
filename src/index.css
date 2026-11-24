@@ -3,37 +3,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #f7f9f9;
-  --surface: #ffffff;
-  --fg: #0b1215;
-  --muted: #4a5a5f;
-  --line: #e2e8e8;
-  --accent: #0f766e;
-  --accent-fg: #ffffff;
-  --accent-soft: rgb(15 118 110 / 0.12);
-  --grid: rgb(11 18 21 / 0.06);
-  --media: #eef3f2;
-  --nav: rgb(247 249 249 / 0.8);
+  /* 60 cream · 30 sage · 10 burnt amber; espresso marks the one thing to look at first */
+  --bg: #f7f1e6;
+  --surface: #e3e9dc;
+  --fg: #2b1e1a;
+  --muted: #5d4f48;
+  --line: #e4dccb;
+  --accent: #b34a1b;
+  --accent-fg: #f7f1e6;
+  --accent-soft: rgb(179 74 27 / 0.12);
+  --sage: #9db49a;
+  --sage-soft: #cfd8c4;
+  --feature: #2b1e1a;
+  --feature-fg: #f7f1e6;
+  --feature-accent: #e57a45;
+  --grid: rgb(43 30 26 / 0.06);
+  --media: #e3e9dc;
+  --nav: rgb(247 241 230 / 0.85);
   color-scheme: light;
 }
 
 .dark {
-  --bg: #0a0f10;
-  --surface: #11181a;
-  --fg: #e6edee;
-  --muted: #9aabae;
-  --line: #1f2a2d;
-  --accent: #2dd4bf;
-  --accent-fg: #04201d;
-  --accent-soft: rgb(45 212 191 / 0.14);
-  --grid: rgb(230 237 238 / 0.06);
-  --media: #0e1517;
-  --nav: rgb(10 15 16 / 0.75);
+  --bg: #141a16;
+  --surface: #1f2a23;
+  --fg: #f1ebdd;
+  --muted: #b4aea1;
+  --line: #2c3a30;
+  --accent: #e57a45;
+  --accent-fg: #141a16;
+  --accent-soft: rgb(229 122 69 / 0.14);
+  --sage: #3c5244;
+  --sage-soft: #25332a;
+  --feature: #f1ebdd;
+  --feature-fg: #2b1e1a;
+  --feature-accent: #b34a1b;
+  --grid: rgb(241 235 221 / 0.06);
+  --media: #1f2a23;
+  --nav: rgb(20 26 22 / 0.85);
   color-scheme: dark;
 }
 
 @theme inline {
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-fg: var(--fg);
@@ -42,6 +54,11 @@
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-accent-soft: var(--accent-soft);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-feature: var(--feature);
+  --color-feature-fg: var(--feature-fg);
+  --color-feature-accent: var(--feature-accent);
   --color-grid: var(--grid);
   --color-media: var(--media);
   --color-nav: var(--nav);
