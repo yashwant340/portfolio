@@ -19,8 +19,9 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-nav backdrop-blur-md">
       <nav className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-6 py-3.5">
-        <Link to="/" className="tap-target text-[15px] font-semibold tracking-tight">
-          {profile.name}
+        <Link to="/" aria-label={profile.name} className="tap-target font-serif text-2xl">
+          {profile.name.split(' ')[0]}
+          <span className="text-accent">.</span>
         </Link>
 
         <div className="flex items-center gap-7">
