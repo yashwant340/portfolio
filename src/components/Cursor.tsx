@@ -23,8 +23,10 @@ export function Cursor() {
       x = e.clientX
       y = e.clientY
       const target = e.target as Element
-      const label = target.closest<HTMLElement>('[data-cursor]')?.dataset.cursor
+      const labelled = target.closest<HTMLElement>('[data-cursor]')
       const interactive = target.closest('a, button, [role="button"]')
+      // A link or button inside a labelled card keeps the plain hover ring (e.g. "Code" on a project card)
+      const label = labelled && !(interactive && interactive !== labelled && labelled.contains(interactive)) ? labelled.dataset.cursor : undefined
       el.dataset.state = label ? 'label' : interactive ? 'hover' : ''
       el.textContent = label ?? ''
 

@@ -191,6 +191,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
             <Link
               to={`/projects/${next.slug}`}
               viewTransition
+              data-cursor="View"
               className="flex flex-wrap items-center justify-between gap-5 rounded-[30px] bg-sage p-8 transition hover:-translate-y-1.5 sm:p-11"
             >
               <div>

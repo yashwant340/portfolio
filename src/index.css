@@ -105,27 +105,6 @@
       background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 40%, var(--sage-soft) 60%, var(--sage) 76%);
     }
   }
-  .scroll-mouse {
-    display: flex;
-    justify-content: center;
-    width: 24px;
-    height: 38px;
-    padding-top: 6px;
-    border: 2px solid currentColor;
-    border-radius: 14px;
-  }
-  .scroll-mouse span {
-    width: 4px;
-    height: 8px;
-    border-radius: 2px;
-    background: var(--accent);
-    animation: wheel 1.6s ease-in-out infinite;
-  }
-  @keyframes wheel {
-    0% { transform: translateY(0); opacity: 1; }
-    70% { transform: translateY(12px); opacity: 0; }
-    100% { opacity: 0; }
-  }
 
   /* ID badge on a lanyard. Fixed light colours: it is a physical card in both themes. */
   .badge-stage {
@@ -281,20 +260,6 @@
     font-weight: 600;
   }
   .badge-btn.is-primary { border-color: #b34a1b; background: #b34a1b; color: #f7f1e6; }
-  .badge-hint {
-    position: absolute;
-    bottom: 3%;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .hint-touch { display: none; }
-  @media (hover: none) {
-    .hint-fine { display: none; }
-    .hint-touch { display: inline; }
-  }
 
   @keyframes panel-in {
     from { opacity: 0; transform: translateY(8px); }

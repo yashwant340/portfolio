@@ -69,6 +69,7 @@ export function IdBadge() {
       <div
         ref={lanyard}
         className="badge-lanyard"
+        data-cursor="Flip"
         role="button"
         tabIndex={0}
         aria-pressed={flipped}
@@ -128,10 +129,6 @@ export function IdBadge() {
           </div>
         </div>
       </div>
-      <span aria-hidden className="badge-hint">
-        <span className="hint-fine">drag to swing · click to flip</span>
-        <span className="hint-touch">tap to flip</span>
-      </span>
     </div>
   )
 }
