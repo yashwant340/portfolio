@@ -1,15 +1,20 @@
 import { useEffect, useRef } from 'react'
 
-// A soft ring that trails the (still visible) pointer: it grows over links and
-// buttons, and shows a label over anything with data-cursor="View". Elements with
-// data-magnetic lean toward the pointer. Mouse-only; off on touch and with reduced motion.
+// The pointer becomes a small accent dot with a soft ring trailing it. The ring
+// grows over links and buttons and shows a label over anything with data-cursor
+// ("View", "Flip"), hiding the dot. Elements with data-magnetic lean toward the
+// pointer. Mouse only; touch devices and reduced motion keep the normal pointer.
 export function Cursor() {
   const ring = useRef<HTMLDivElement>(null)
+  const dot = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const el = ring.current
-    if (!el || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const d = dot.current
+    if (!el || !d || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const root = document.documentElement
+    root.classList.add('custom-cursor')
 
     let x = -100
     let y = -100
@@ -29,6 +34,8 @@ export function Cursor() {
       const label = labelled && !(interactive && interactive !== labelled && labelled.contains(interactive)) ? labelled.dataset.cursor : undefined
       el.dataset.state = label ? 'label' : interactive ? 'hover' : ''
       el.textContent = label ?? ''
+      d.style.translate = `${x}px ${y}px`
+      d.style.opacity = label ? '0' : '1'
 
       const m = target.closest<HTMLElement>('[data-magnetic]')
       if (magnet && magnet !== m) magnet.style.transform = ''
@@ -39,7 +46,10 @@ export function Cursor() {
       }
       el.style.opacity = '1'
     }
-    const onLeave = () => (el.style.opacity = '0')
+    const onLeave = () => {
+      el.style.opacity = '0'
+      d.style.opacity = '0'
+    }
     const tick = () => {
       rx += (x - rx) * 0.2
       ry += (y - ry) * 0.2
@@ -54,8 +64,14 @@ export function Cursor() {
       removeEventListener('pointermove', onMove)
       document.documentElement.removeEventListener('pointerleave', onLeave)
       if (magnet) magnet.style.transform = ''
+      root.classList.remove('custom-cursor')
     }
   }, [])
 
-  return <div ref={ring} aria-hidden className="cursor-ring" />
+  return (
+    <>
+      <div ref={ring} aria-hidden className="cursor-ring" />
+      <div ref={dot} aria-hidden className="cursor-dot" />
+    </>
+  )
 }

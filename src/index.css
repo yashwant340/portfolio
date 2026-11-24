@@ -539,9 +539,27 @@
   }
   .cursor-ring[data-state='hover'] { top: -27px; left: -27px; width: 54px; height: 54px; border-color: var(--accent); background: var(--accent-soft); }
   .cursor-ring[data-state='label'] { top: -35px; left: -35px; width: 70px; height: 70px; border-color: var(--fg); background: var(--fg); }
+  .cursor-dot {
+    position: fixed;
+    top: -4px;
+    left: -4px;
+    z-index: 101;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+  /* The dot replaces the arrow; text fields keep their text cursor */
+  .custom-cursor,
+  .custom-cursor * { cursor: none !important; }
+  .custom-cursor :is(input, textarea, select, [contenteditable]) { cursor: auto !important; }
   [data-magnetic] { transition: transform 0.25s var(--ease-out-soft); }
   @media (hover: none), (prefers-reduced-motion: reduce) {
-    .cursor-ring { display: none; }
+    .cursor-ring,
+    .cursor-dot { display: none; }
   }
 
   /* Grows a small text link's tap area to at least 44px tall without changing its layout */
