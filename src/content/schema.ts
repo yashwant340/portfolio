@@ -27,6 +27,8 @@ export const profileSchema = z.object({
     facts: z.array(z.object({ label: text, value: text })).min(1).max(6),
   }),
   contact: z.object({ heading: text, text, button: text }),
+  // Closing band on story-layout project pages; contact.text sits under it
+  projectCta: z.object({ heading: text }),
   // Home projects section: heading and the counter beside it ("2 built · 1 in progress")
   projectsSection: z.object({ heading: text, builtLabel: text, inProgressLabel: text }),
   // Shown on shipped projects that have no `links.live` yet
@@ -81,6 +83,28 @@ export const beyondSchema = z
 
 const node = z.object({ title: text, detail: text })
 
+// A box on the detailed architecture map; `info` shows when it is hovered or tapped
+// `queue` marks the service that sends judge jobs or receives verdicts through the queue
+const mapNode = z.object({
+  title: text,
+  detail: text,
+  info: text,
+  mine: z.boolean().default(false),
+  queue: z.enum(['job', 'verdict']).optional(),
+})
+
+// One chapter of the story layout. `type` picks which part of the write-up it shows;
+// `decisions` are indexes into `decisions`, `highlight` names a latency row or failure to mark as mine.
+const storyChapter = z.object({
+  type: z.enum(['overview', 'built', 'architecture', 'decision', 'decisions', 'latency', 'failures']),
+  heading: text,
+  stat: z.object({ value: text, label: text }),
+  mine: z.boolean().default(false),
+  items: z.array(z.object({ title: text, body: text })).optional(),
+  decisions: z.array(z.number().int().min(0)).optional(),
+  highlight: text.optional(),
+})
+
 const shippedProject = z.object({
   status: z.literal('shipped'),
   slug: text,
@@ -116,6 +140,20 @@ const shippedProject = z.object({
     server: node,
     services: z.array(node.extend({ link: text })).min(1),
   }),
+  // Optional story layout (see storyChapter) and the detailed map its architecture chapter uses
+  story: z.array(storyChapter).min(2).optional(),
+  diagram: z
+    .object({
+      // Label on the line from the client to the gateway
+      requestLabel: text,
+      client: mapNode,
+      gateway: mapNode,
+      services: z.array(mapNode).min(1).max(4),
+      queue: mapNode,
+      worker: mapNode,
+      observability: mapNode.optional(),
+    })
+    .optional(),
   // Design choices and why, shown between Architecture and Key challenges
   // `tradeoff` is what the choice cost; shown as a muted line under the reason
   decisions: z.array(z.object({ title: text, body: text, tradeoff: text.optional() })).optional(),

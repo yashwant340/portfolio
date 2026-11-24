@@ -29,6 +29,7 @@ export const profile: Profile = {
     text: "I'm looking for full-time software engineering roles in Dublin or remote from late 2027, and a summer 2027 internship. Drop me a message. My response time beats most APIs.",
     button: 'Say Hello',
   },
+  projectCta: { heading: 'Like how I **build?**' },
   projectsSection: {
     heading: 'Projects',
     builtLabel: 'built',
