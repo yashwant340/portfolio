@@ -62,7 +62,6 @@ story:
   - type: architecture
     heading: One service, **on purpose**
     stat: { value: "1", label: "service, one database, one deploy" }
-    decisions: [0]
 architecture:
   summary: Two apps. A React client that only renders and fetches, and a Spring Boot API that owns auth, GitHub integration, persistence and metric computation.
   client:
@@ -93,6 +92,7 @@ diagram:
   stores:
     - { title: PostgreSQL, detail: "PRs, commits, snapshots", link: JPA, info: "Stores pull requests, commits, reviews, contributors and the daily snapshots." }
     - { title: GitHub API, detail: "repos, PRs, commits", link: "REST, paginated", info: "Source of repositories, pull requests, reviews and commits, read page by page." }
+keyDecision: 0
 decisions:
   - title: One service, not microservices
     body: "DevMetrics is about features: sync, sign-in, scoring and comparison. In one service with one database, a new feature is one change and one deploy, and nothing here needs to scale on its own. When a system does, I split it, as in Mini LeetCode."

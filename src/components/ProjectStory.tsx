@@ -65,6 +65,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
     })
 
   const current = story[active] ?? story[0]
+  const key = project.keyDecision !== undefined ? project.decisions?.[project.keyDecision] : undefined
 
   return (
     <article className="pb-24">
@@ -119,6 +120,25 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
         <Reveal>
           <ClipPlayer project={project} />
         </Reveal>
+
+        {/* The decision that frames the whole project, read before the story */}
+        {key && (
+          <Reveal as="section" className="mt-16 rounded-[32px] bg-feature px-7 py-10 text-feature-fg sm:px-12 sm:py-12" aria-labelledby="key-decision">
+            <div className="text-xs font-bold tracking-[0.16em] text-feature-accent uppercase">The big decision</div>
+            <h2 id="key-decision" className="mt-3 font-serif text-[clamp(36px,4.4vw,56px)] leading-none font-normal">
+              {key.title}
+            </h2>
+            <div className="mt-7 grid gap-7 md:grid-cols-[1.5fr_1fr] md:gap-12">
+              <p className="text-[17px] leading-[1.7] opacity-90">{key.body}</p>
+              {key.tradeoff && (
+                <p className="border-t border-current/20 pt-5 text-[15px] leading-relaxed md:border-t-0 md:border-l md:pt-0 md:pl-8">
+                  <b className="mb-1.5 block text-xs tracking-[0.14em] text-feature-accent uppercase">Trade-off</b>
+                  {key.tradeoff}
+                </p>
+              )}
+            </div>
+          </Reveal>
+        )}
 
         <div id="story" className="story-grid scroll-mt-20">
           {/* Chapter rail (large screens): a labelled jump target for every chapter */}

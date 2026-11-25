@@ -179,6 +179,8 @@ const shippedProject = z.object({
   // Design choices and why, shown between Architecture and Key challenges
   // `tradeoff` is what the choice cost; shown as a muted line under the reason
   decisions: z.array(z.object({ title: text, body: text, tradeoff: text.optional() })).optional(),
+  // Index of the decision that frames the whole project; story pages show it in a band above the story
+  keyDecision: z.number().int().min(0).optional(),
   // Measured results: headline numbers, a p50/p99 latency chart and injected failures
   results: z
     .object({
