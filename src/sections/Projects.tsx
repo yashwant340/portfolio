@@ -121,8 +121,14 @@ function Featured({ project: p }: { project: ShippedWithHtml }) {
         {p.proof && (
           <dl className="mt-7 grid gap-x-6 gap-y-4 sm:grid-cols-3">
             {p.proof.map((s) => (
-              <div key={s.label} className="grid grid-cols-[88px_1fr] items-baseline gap-3 sm:block">
-                <dt className="font-serif text-[clamp(32px,3.4vw,44px)] leading-none text-feature-accent">{s.value}</dt>
+              <div key={s.label} className="grid grid-cols-[minmax(88px,auto)_1fr] items-baseline gap-3 sm:block">
+                <dt
+                  className={`font-serif leading-none whitespace-nowrap text-feature-accent ${
+                    s.value.length > 6 ? 'text-[clamp(26px,2.3vw,34px)]' : 'text-[clamp(32px,3.4vw,44px)]'
+                  }`}
+                >
+                  {s.value}
+                </dt>
                 <dd className="text-[13px] leading-snug opacity-75 sm:mt-2">{s.label}</dd>
               </div>
             ))}
