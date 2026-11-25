@@ -7,7 +7,6 @@ import { filled } from '../lib/todo'
 import { ArchMap } from './ArchMap'
 import { ClipPlayer } from './ClipPlayer'
 import { Highlight } from './Highlight'
-import { LoopVideo } from './LoopVideo'
 import { ArrowRight, Download } from './Icons'
 import { Reveal } from './Reveal'
 
@@ -34,10 +33,6 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
   const story = project.story ?? []
   const chapters = useRef<(HTMLElement | null)[]>([])
   const [active, setActive] = useState(0)
-  const [paused, setPaused] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches)
-  const togglePause = () => setPaused((p) => !p)
-  // Chapters that carry their own clips replace the clip player above the story
-  const clipsInStory = story.some((c) => c.clip !== undefined)
   const code = filled(project.links.code)
   const repos = [
     { label: 'Frontend code', href: filled(project.links.frontend) },
@@ -70,7 +65,6 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
     })
 
   const current = story[active] ?? story[0]
-  const currentClip = current.clip !== undefined ? project.clips[current.clip] : undefined
 
   return (
     <article className="pb-24">
@@ -122,11 +116,9 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
       </header>
 
       <div className="mx-auto max-w-[1180px] px-6">
-        {!clipsInStory && (
-          <Reveal>
-            <ClipPlayer project={project} />
-          </Reveal>
-        )}
+        <Reveal>
+          <ClipPlayer project={project} />
+        </Reveal>
 
         <div id="story" className="story-grid scroll-mt-20">
           {/* Chapter rail (large screens): a labelled jump target for every chapter */}
@@ -145,7 +137,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
             ))}
           </nav>
 
-          <div className={`story-stage ${current.mine ? 'is-mine' : ''} ${currentClip ? 'is-clip' : ''}`}>
+          <div className={`story-stage ${current.mine ? 'is-mine' : ''}`}>
             <span className="story-badge" aria-hidden>
               My part
             </span>
@@ -153,24 +145,14 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
               <div className="story-kicker" aria-hidden>
                 {num(active)} · {labelOf(current)}
               </div>
-              {currentClip?.src ? (
-                <>
-                  <LoopVideo src={currentClip.src} title={currentClip.title} paused={paused} onToggle={togglePause} className="story-video" />
-                  <div className="story-cap" aria-hidden>
-                    {currentClip.title}
-                  </div>
-                </>
-              ) : (
-                current.stat && (
-                  <>
-                    <div className={`story-num font-serif ${current.stat.value.length > 6 ? 'is-long' : ''}`} aria-hidden>
-                      {current.stat.value}
-                    </div>
-                    <div className="story-cap" aria-hidden>
-                      {current.stat.label}
-                    </div>
-                  </>
-                )
+              {/* No honest number for this chapter: its name stands in */}
+              <div className={`story-num font-serif ${(current.stat?.value ?? labelOf(current)).length > 6 ? 'is-long' : ''}`} aria-hidden>
+                {current.stat?.value ?? labelOf(current)}
+              </div>
+              {current.stat && (
+                <div className="story-cap" aria-hidden>
+                  {current.stat.label}
+                </div>
               )}
             </div>
             <div className="story-dots" aria-hidden>
@@ -202,12 +184,6 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
                   <p className="sr-only">
                     {c.stat.value} {c.stat.label}
                   </p>
-                )}
-                {/* On phones the pinned strip is too small for video, so the clip sits in the chapter */}
-                {c.clip !== undefined && project.clips[c.clip]?.src && (
-                  <div className="mt-5 lg:hidden">
-                    <LoopVideo src={project.clips[c.clip].src!} title={project.clips[c.clip].title} paused={paused} onToggle={togglePause} />
-                  </div>
                 )}
                 <div className="mt-5">
                   <ChapterBody chapter={c} project={project} />
@@ -331,14 +307,8 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
       return (
         <div className="max-w-[48ch]">
           {paragraph && <div className={`${prose} [&_strong]:text-fg`} dangerouslySetInnerHTML={{ __html: paragraph + '</p>' }} />}
-          {c.note && (
-            <p className="flex items-baseline gap-3 border-y border-line py-3 text-[15px] leading-snug">
-              <span className="font-serif text-[40px] leading-none text-accent">{c.note.value}</span>
-              {c.note.label}
-            </p>
-          )}
           {challenge && (
-            <div className="mt-6">
+            <div className={paragraph ? 'mt-6' : ''}>
               <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">The hard part · {challenge.title}</div>
               <p className={`${prose} mt-2`}>{challenge.body}</p>
             </div>

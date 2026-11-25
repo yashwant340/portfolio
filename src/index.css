@@ -468,11 +468,6 @@ body::before {
   .story-dots span { flex: 1; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--fg) 20%, transparent); }
   .story-dots span.is-on { background: var(--fg); }
   .story-dots span.is-mine.is-on { background: var(--accent); }
-  /* Clip chapters: the phone strip names the clip (it plays inside the chapter instead) */
-  .story-stage.is-clip .story-kicker,
-  .story-stage.is-clip .story-cap { grid-column: 1 / -1; }
-  .story-stage.is-clip .story-cap { font-family: var(--font-serif); font-size: 26px; line-height: 1.05; }
-  .story-video { display: none; }
   .story-rail { display: none; }
   .story-chapter { position: relative; padding: 56px 0 20px 18px; scroll-margin-top: 200px; }
   .story-chapter::before {
@@ -519,9 +514,6 @@ body::before {
       padding: 44px;
       border-radius: 32px;
     }
-    .story-stage.is-clip { padding: 32px; }
-    .story-video { display: block; margin-top: 4px; }
-    .story-stage.is-clip .story-cap { max-width: none; margin-top: 18px; font-size: 30px; }
     .story-stage::after { top: -90px; right: -90px; width: 260px; height: 260px; }
     .story-stage-text { display: block; }
     .story-kicker { margin-bottom: 10px; font-size: 12px; }

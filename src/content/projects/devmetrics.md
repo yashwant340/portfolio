@@ -34,14 +34,13 @@ clips:
 story:
   - type: overview
     heading: Is this repo **healthy?**
-    clip: 0
+    stat: { value: "4", label: kinds of GitHub data synced }
   - type: feature
     label: Sync
     heading: Sync only **what's new**
-    clip: 1
+    stat: { value: "71%", label: fewer GitHub calls on a re-sync than on the first sync }
     challenge: 0
     limits: [0, 1]
-    note: { value: "71%", label: fewer GitHub calls on a re-sync than on the first sync }
   - type: feature
     label: Sign-in
     heading: No tokens in the **browser**
@@ -59,7 +58,6 @@ story:
   - type: feature
     label: Compare
     heading: Two repos, **side by side**
-    clip: 2
     paragraph: 2
   - type: architecture
     heading: One service, **on purpose**

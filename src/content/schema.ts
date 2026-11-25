@@ -96,25 +96,21 @@ const mapNode = z.object({
 // One chapter of the story layout. `type` picks which part of the write-up it shows;
 // `decisions` are indexes into `decisions`, `highlight` names a latency row or failure to mark as mine.
 // A `feature` chapter groups one feature's write-up: `paragraph` (of the body text), `challenge`,
-// `decisions` and `limits` are indexes. The pinned panel plays `clip` (an index into `clips`)
-// when set, otherwise it shows `stat`. `label` names the chapter in the rail and kicker.
-const storyChapter = z
-  .object({
-    type: z.enum(['overview', 'built', 'architecture', 'decision', 'decisions', 'latency', 'failures', 'feature']),
-    label: text.optional(),
-    heading: text,
-    stat: z.object({ value: text, label: text }).optional(),
-    clip: z.number().int().min(0).optional(),
-    mine: z.boolean().default(false),
-    items: z.array(z.object({ title: text, body: text })).optional(),
-    decisions: z.array(z.number().int().min(0)).optional(),
-    highlight: text.optional(),
-    paragraph: z.number().int().min(0).optional(),
-    challenge: z.number().int().min(0).optional(),
-    limits: z.array(z.number().int().min(0)).optional(),
-    note: z.object({ value: text, label: text }).optional(),
-  })
-  .refine((c) => c.stat || c.clip !== undefined, { message: 'a story chapter needs a stat or a clip' })
+// `decisions` and `limits` are indexes. The pinned panel shows `stat`, or the chapter's name
+// when it has no honest number. `label` names the chapter in the rail and kicker.
+const storyChapter = z.object({
+  type: z.enum(['overview', 'built', 'architecture', 'decision', 'decisions', 'latency', 'failures', 'feature']),
+  label: text.optional(),
+  heading: text,
+  stat: z.object({ value: text, label: text }).optional(),
+  mine: z.boolean().default(false),
+  items: z.array(z.object({ title: text, body: text })).optional(),
+  decisions: z.array(z.number().int().min(0)).optional(),
+  highlight: text.optional(),
+  paragraph: z.number().int().min(0).optional(),
+  challenge: z.number().int().min(0).optional(),
+  limits: z.array(z.number().int().min(0)).optional(),
+})
 
 const shippedProject = z.object({
   status: z.literal('shipped'),
