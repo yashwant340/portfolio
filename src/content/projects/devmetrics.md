@@ -31,6 +31,40 @@ clips:
     src: /projects/devmetrics/clip-sync.mp4
   - title: Compare two repositories
     src: /projects/devmetrics/clip-compare.mp4
+story:
+  - type: overview
+    heading: Is this repo **healthy?**
+    clip: 0
+  - type: feature
+    label: Sync
+    heading: Sync only **what's new**
+    clip: 1
+    challenge: 0
+    limits: [0, 1]
+    note: { value: "71%", label: fewer GitHub calls on a re-sync than on the first sync }
+  - type: feature
+    label: Sign-in
+    heading: No tokens in the **browser**
+    stat: { value: "15 min", label: "access tokens, with a 7-day refresh token" }
+    challenge: 1
+    decisions: [1]
+    limits: [3]
+  - type: feature
+    label: Health score
+    heading: A score you can **trend**
+    stat: { value: "0–100", label: "health score, four 25-point parts" }
+    challenge: 2
+    decisions: [2]
+    limits: [2]
+  - type: feature
+    label: Compare
+    heading: Two repos, **side by side**
+    clip: 2
+    paragraph: 2
+  - type: architecture
+    heading: One service, **on purpose**
+    stat: { value: "1", label: "service, one database, one deploy" }
+    decisions: [0]
 architecture:
   summary: Two apps. A React client that only renders and fetches, and a Spring Boot API that owns auth, GitHub integration, persistence and metric computation.
   client:

@@ -7,6 +7,7 @@ import { filled } from '../lib/todo'
 import { ArchMap } from './ArchMap'
 import { ClipPlayer } from './ClipPlayer'
 import { Highlight } from './Highlight'
+import { LoopVideo } from './LoopVideo'
 import { ArrowRight, Download } from './Icons'
 import { Reveal } from './Reveal'
 
@@ -20,7 +21,10 @@ const typeLabel: Record<Chapter['type'], string> = {
   decisions: 'Key decisions',
   latency: 'Speed',
   failures: 'Results',
+  feature: 'Feature',
 }
+
+const labelOf = (c: Chapter) => c.label ?? typeLabel[c.type]
 
 const num = (i: number) => String(i + 1).padStart(2, '0')
 
@@ -30,6 +34,10 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
   const story = project.story ?? []
   const chapters = useRef<(HTMLElement | null)[]>([])
   const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches)
+  const togglePause = () => setPaused((p) => !p)
+  // Chapters that carry their own clips replace the clip player above the story
+  const clipsInStory = story.some((c) => c.clip !== undefined)
   const code = filled(project.links.code)
   const repos = [
     { label: 'Frontend code', href: filled(project.links.frontend) },
@@ -62,6 +70,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
     })
 
   const current = story[active] ?? story[0]
+  const currentClip = current.clip !== undefined ? project.clips[current.clip] : undefined
 
   return (
     <article className="pb-24">
@@ -113,29 +122,60 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
       </header>
 
       <div className="mx-auto max-w-[1180px] px-6">
-        <Reveal>
-          <ClipPlayer project={project} />
-        </Reveal>
+        {!clipsInStory && (
+          <Reveal>
+            <ClipPlayer project={project} />
+          </Reveal>
+        )}
 
         <div id="story" className="story-grid scroll-mt-20">
-          <div className={`story-stage ${current.mine ? 'is-mine' : ''}`} aria-hidden>
-            <span className="story-badge">My part</span>
+          {/* Chapter rail (large screens): a labelled jump target for every chapter */}
+          <nav className="story-rail" aria-label="Chapters">
+            {story.map((c, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => jump(i)}
+                aria-current={i === active ? 'step' : undefined}
+                className={`${i === active ? 'is-on' : ''} ${i < active ? 'is-done' : ''}`}
+              >
+                <span className="story-rail-num">{num(i)}</span>
+                {labelOf(c)}
+              </button>
+            ))}
+          </nav>
+
+          <div className={`story-stage ${current.mine ? 'is-mine' : ''} ${currentClip ? 'is-clip' : ''}`}>
+            <span className="story-badge" aria-hidden>
+              My part
+            </span>
             <div key={active} className="story-stage-text">
-              <div className="story-kicker">
-                {num(active)} · {typeLabel[current.type]}
+              <div className="story-kicker" aria-hidden>
+                {num(active)} · {labelOf(current)}
               </div>
-              <div className={`story-num font-serif ${current.stat.value.length > 6 ? 'is-long' : ''}`}>{current.stat.value}</div>
-              <div className="story-cap">{current.stat.label}</div>
+              {currentClip?.src ? (
+                <>
+                  <LoopVideo src={currentClip.src} title={currentClip.title} paused={paused} onToggle={togglePause} className="story-video" />
+                  <div className="story-cap" aria-hidden>
+                    {currentClip.title}
+                  </div>
+                </>
+              ) : (
+                current.stat && (
+                  <>
+                    <div className={`story-num font-serif ${current.stat.value.length > 6 ? 'is-long' : ''}`} aria-hidden>
+                      {current.stat.value}
+                    </div>
+                    <div className="story-cap" aria-hidden>
+                      {current.stat.label}
+                    </div>
+                  </>
+                )
+              )}
             </div>
-            <div className="story-dots">
+            <div className="story-dots" aria-hidden>
               {story.map((c, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  tabIndex={-1}
-                  onClick={() => jump(i)}
-                  className={`${i <= active ? 'is-on' : ''} ${c.mine ? 'is-mine' : ''}`}
-                />
+                <span key={i} className={`${i <= active ? 'is-on' : ''} ${c.mine ? 'is-mine' : ''}`} />
               ))}
             </div>
           </div>
@@ -151,16 +191,24 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
                 aria-labelledby={`chapter-${i}`}
               >
                 <div className="text-xs font-bold tracking-[0.16em] text-accent uppercase">
-                  {num(i)} · {typeLabel[c.type]}
+                  {num(i)} · {labelOf(c)}
                   {c.mine && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 tracking-[0.08em] text-accent-fg">Mine</span>}
                 </div>
                 <h2 id={`chapter-${i}`} className="mt-3 font-serif text-[clamp(38px,4vw,56px)] leading-none font-normal">
                   <Highlight text={c.heading} />
                 </h2>
                 {/* The big number for screen readers, since the pinned panel is decorative */}
-                <p className="sr-only">
-                  {c.stat.value} {c.stat.label}
-                </p>
+                {c.stat && (
+                  <p className="sr-only">
+                    {c.stat.value} {c.stat.label}
+                  </p>
+                )}
+                {/* On phones the pinned strip is too small for video, so the clip sits in the chapter */}
+                {c.clip !== undefined && project.clips[c.clip]?.src && (
+                  <div className="mt-5 lg:hidden">
+                    <LoopVideo src={project.clips[c.clip].src!} title={project.clips[c.clip].title} paused={paused} onToggle={togglePause} />
+                  </div>
+                )}
                 <div className="mt-5">
                   <ChapterBody chapter={c} project={project} />
                 </div>
@@ -234,7 +282,10 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
       return (
         <>
           <p className={prose}>{project.architecture.summary}</p>
-          {project.diagram && <ArchMap diagram={project.diagram} />}
+          {project.diagram ? <ArchMap diagram={project.diagram} /> : <SimpleArch project={project} />}
+          {(c.decisions ?? []).map((i) => project.decisions?.[i]).filter((d) => !!d).map((d) => (
+            <Decision key={d.title} title={d.title} body={d.body} tradeoff={d.tradeoff} />
+          ))}
         </>
       )
     case 'decision':
@@ -269,6 +320,47 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
               )}
             </div>
           ))}
+        </div>
+      )
+    }
+    case 'feature': {
+      const paragraph = c.paragraph !== undefined ? project.html.split('</p>')[c.paragraph] : undefined
+      const challenge = c.challenge !== undefined ? project.challenges?.[c.challenge] : undefined
+      const decisions = (c.decisions ?? []).map((i) => project.decisions?.[i]).filter((d) => !!d)
+      const limits = (c.limits ?? []).map((i) => project.limitations?.[i]).filter((l) => !!l)
+      return (
+        <div className="max-w-[48ch]">
+          {paragraph && <div className={`${prose} [&_strong]:text-fg`} dangerouslySetInnerHTML={{ __html: paragraph + '</p>' }} />}
+          {c.note && (
+            <p className="flex items-baseline gap-3 border-y border-line py-3 text-[15px] leading-snug">
+              <span className="font-serif text-[40px] leading-none text-accent">{c.note.value}</span>
+              {c.note.label}
+            </p>
+          )}
+          {challenge && (
+            <div className="mt-6">
+              <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">The hard part · {challenge.title}</div>
+              <p className={`${prose} mt-2`}>{challenge.body}</p>
+            </div>
+          )}
+          {decisions.map((d) => (
+            <Decision key={d.title} title={d.title} body={d.body} tradeoff={d.tradeoff} />
+          ))}
+          {limits.length > 0 && (
+            <div className="mt-7">
+              <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">Next step</div>
+              <ul className="m-0 mt-2 list-none p-0">
+                {limits.map((l) => (
+                  <li key={l.issue} className="grid grid-cols-[20px_1fr] gap-2 border-b border-line py-3 text-sm leading-normal">
+                    <span aria-hidden className="text-accent">→</span>
+                    <span>
+                      <b className="font-semibold">{l.issue}.</b> <span className="text-muted">{l.next}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )
     }
@@ -324,4 +416,51 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
       )
     }
   }
+}
+
+// A decision inside a chapter: a soft sage card, so it stands apart from the prose around it
+function Decision({ title, body, tradeoff }: { title: string; body: string; tradeoff?: string }) {
+  return (
+    <div className="mt-6 max-w-[48ch] rounded-[22px] bg-sage-soft px-5 py-4">
+      <div className="text-xs font-bold tracking-[0.14em] uppercase">My decision</div>
+      <b className="mt-1.5 block text-[17px] leading-snug">{title}</b>
+      <p className="mt-1.5 text-[15px] leading-relaxed">{body}</p>
+      {tradeoff && (
+        <p className="mt-2 text-[15px] leading-relaxed">
+          <b>Trade-off:</b> {tradeoff}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// The architecture as a short stacked flow, for projects without a drawn map
+function SimpleArch({ project }: { project: ShippedWithHtml }) {
+  const a = project.architecture
+  const Box = ({ title, detail, strong }: { title: string; detail: string; strong?: boolean }) => (
+    <div className={`rounded-2xl px-4 py-3 ${strong ? 'bg-feature text-feature-fg' : 'border-[1.5px] border-line bg-bg'}`}>
+      <b className="block text-[15px]">{title}</b>
+      <span className={`text-[13px] leading-snug ${strong ? 'opacity-80' : 'text-muted'}`}>{detail}</span>
+    </div>
+  )
+  const Link_ = ({ label }: { label: string }) => (
+    <div className="flex items-center gap-2 py-1.5 pl-5 text-xs text-muted">
+      <span aria-hidden className="h-4 w-px bg-fg/30" /> {label}
+    </div>
+  )
+  return (
+    <div className="mt-6 max-w-[48ch]">
+      <Box {...a.client} />
+      <Link_ label={a.clientLink} />
+      <Box {...a.server} strong />
+      <div className="grid gap-x-3 sm:grid-cols-2">
+        {a.services.map((sv) => (
+          <div key={sv.title}>
+            <Link_ label={sv.link} />
+            <Box title={sv.title} detail={sv.detail} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
