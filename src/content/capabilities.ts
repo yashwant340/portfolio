@@ -21,7 +21,7 @@ export const capabilities: Capability[] = [
     title: 'Fault-tolerant distributed services',
     description: 'Queues, an outbox and idempotent consumers, so work survives crashes and restarts.',
     tools: ['RabbitMQ', 'Go', 'Docker'],
-    stat: { value: '0', label: 'submissions lost through a broker outage and a crash' },
+    stat: { value: '300 / 300', label: 'submissions accepted with RabbitMQ stopped' },
     usedIn: ['mini-leetcode'],
   },
   {
