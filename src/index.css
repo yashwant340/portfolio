@@ -559,6 +559,7 @@ body::before {
   .arch-node:hover rect, .arch-node.is-selected rect { stroke: var(--accent); stroke-width: 2.5; }
   .arch-node:focus-visible rect { stroke: var(--accent); stroke-width: 3.5; }
   .arch-dot { fill: var(--accent); }
+  .arch-node.is-container rect { fill: color-mix(in srgb, var(--sage) 28%, var(--bg)); }
 
   /* Cursor ring: an accent that trails the normal pointer */
   .cursor-ring {

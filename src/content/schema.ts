@@ -149,17 +149,32 @@ const shippedProject = z.object({
   }),
   // Optional story layout (see storyChapter) and the detailed map its architecture chapter uses
   story: z.array(storyChapter).min(2).optional(),
+  // Either a distributed map (gateway, services, queue, worker) or a single-service one
+  // (an API holding `modules`, with `stores` below it). Both trace one request with a moving dot.
   diagram: z
-    .object({
-      // Label on the line from the client to the gateway
-      requestLabel: text,
-      client: mapNode,
-      gateway: mapNode,
-      services: z.array(mapNode).min(1).max(4),
-      queue: mapNode,
-      worker: mapNode,
-      observability: mapNode.optional(),
-    })
+    .union([
+      z.object({
+        // Label on the line from the client to the gateway
+        requestLabel: text,
+        client: mapNode,
+        gateway: mapNode,
+        services: z.array(mapNode).min(1).max(4),
+        queue: mapNode,
+        worker: mapNode,
+        observability: mapNode.optional(),
+      }),
+      z.object({
+        requestLabel: text,
+        // What the moving dot traces, e.g. "one sync"
+        trace: text,
+        client: mapNode,
+        server: mapNode,
+        modules: z.array(mapNode).min(2).max(4),
+        // Which module the dot passes through
+        traceModule: z.number().int().min(0),
+        stores: z.array(mapNode.extend({ link: text })).length(2),
+      }),
+    ])
     .optional(),
   // Design choices and why, shown between Architecture and Key challenges
   // `tradeoff` is what the choice cost; shown as a muted line under the reason
