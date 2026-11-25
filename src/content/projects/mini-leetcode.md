@@ -58,7 +58,7 @@ architecture:
 story:
   - type: overview
     heading: "Running strangers' code, **safely**"
-    stat: { value: "150", label: students in the class it was built for }
+    stat: { value: "< 40 ms", label: "to accept a burst of 40 submissions; every one then judged correctly" }
   - type: built
     heading: "My three **parts**"
     stat: { value: "3", label: parts of the system I built }
@@ -152,7 +152,7 @@ results:
       outcome: Verdicts unaffected, hints resumed
 
 ---
-I wanted to see what it takes to run strangers' code safely and still answer quickly. Mini LeetCode is a small LeetCode-style judge for a class of about 150 students: pick a problem, try your code against the samples, submit, and watch the verdict arrive live.
+I wanted to see what it takes to run strangers' code safely and still answer quickly. Mini LeetCode is a small LeetCode-style judge: pick a problem, try your code against the samples, submit, and watch the verdict arrive live.
 
 Behind the editor, the submission and its judge job are saved in one transaction and published to RabbitMQ from an outbox. A stateless judge worker fetches the problem's hidden test set and runs each case in a locked-down sandbox from the Spawner's warm pool: no network, a read-only filesystem and CPU and memory limits. The verdict fans back out to the submission service, the leaderboard and, if the code failed, the AI service, which asks a local model for a hint. The whole system starts with one docker compose up at no running cost.
 
