@@ -6,7 +6,7 @@ title: Team Access Manager
 category: Security & workflows
 summary: Role-based access control with team-inherited permissions, approval workflows and a full audit trail.
 tagline: An access-governance app for managing people, teams and feature-level permissions, with self-service access requests, approvals, password recovery and audit history.
-role: Solo · Full-stack
+role: Solo, full-stack
 stack: [React, Material UI, Spring Boot, Spring Security, JWT, PostgreSQL]
 highlights:
   - Three roles with scoped admin views
@@ -63,7 +63,7 @@ limitations:
     next: Standardise on Material UI for a consistent look and a smaller bundle.
 ---
 
-Most teams manage access with a spreadsheet and a chat thread. Team Access Manager makes it explicit: who can use which feature, why, who approved it, and when it changed.
+Most teams manage access with a spreadsheet and a chat thread. Team Access Manager makes it explicit who can use which feature, why, who approved it, and when it changed.
 
 There are three roles. A platform admin manages every team, user and request. A team admin manages their own team's members, permissions and requests. A regular user sees their effective access, asks for features to be granted or revoked, and can cancel a pending request.
 

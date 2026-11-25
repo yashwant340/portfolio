@@ -3,21 +3,21 @@ import type { Journey } from './schema'
 export const journey: Journey = {
   steps: [
     {
-      period: '2019 — 2023',
+      period: '2019 to 2023',
       title: 'BE Computer Science and Engineering',
       place: 'Chennai',
       org: 'Anna University',
       detail: 'Anna University (MIT Campus). CGPA 8.63/10.',
     },
     {
-      period: 'Jul 2023 — Aug 2026',
-      title: 'Software Engineer → Specialist Software Engineer',
+      period: 'Jul 2023 to Aug 2026',
+      title: 'Software Engineer, then Specialist Software Engineer',
       place: 'Bangalore',
       org: 'Societe Generale',
-      detail: 'Societe Generale, Bangalore. Promoted in 2026; Star of the Quarter and two Spot Awards.',
+      detail: 'Societe Generale, Bangalore. Promoted in 2026. Star of the Quarter and two Spot Awards.',
     },
     {
-      period: 'Sep 2026 — Now',
+      period: 'Sep 2026 to now',
       title: 'MSc Computer Science',
       place: 'Dublin',
       org: 'University College Dublin',
@@ -26,7 +26,7 @@ export const journey: Journey = {
     },
     {
       period: 'Next',
-      title: 'Internship & full-time role · Dublin / Remote',
+      title: 'Internship & full-time role in Dublin or remote',
       place: 'Your team?',
       detail: 'A summer 2027 internship as my final term, then full-time from late 2027.',
       state: 'next',

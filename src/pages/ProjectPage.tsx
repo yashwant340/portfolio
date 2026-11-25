@@ -37,9 +37,9 @@ export function ProjectPage() {
   const project = findProject(slug)
 
   useEffect(() => {
-    document.title = project ? `${project.title} — ${profile.name}` : `Not found — ${profile.name}`
+    document.title = project ? `${project.title} by ${profile.name}` : `Page not found`
     return () => {
-      document.title = `${profile.name} — ${profile.role}`
+      document.title = `${profile.name}, ${profile.role.toLowerCase()}`
     }
   }, [project])
 
@@ -66,7 +66,7 @@ export function ProjectPage() {
 
       <header className="mt-8">
         <div className="text-[13px] font-semibold text-accent">
-          {project.category} · {project.role}
+          {project.category}, {project.role.toLowerCase()}
         </div>
         <h1
           className="mt-3 font-serif text-[clamp(52px,7vw,88px)] leading-[0.95] font-normal"

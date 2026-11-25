@@ -113,7 +113,7 @@ export function Capabilities() {
                       {cap.title}
                     </span>
                     <span className="mt-1 hidden text-xs font-semibold tracking-[0.06em] uppercase lg:block">
-                      {cap.usedIn.map((r) => projectTitle(r) ?? r).join(' · ')}
+                      {cap.usedIn.map((r) => projectTitle(r) ?? r).join(', ')}
                     </span>
                   </span>
                 </button>
@@ -162,7 +162,7 @@ function Panel({
       )}
       <div key={cap.title} className="relative z-[1] flex animate-[panel-in_.35s_var(--ease-out-soft)] flex-col gap-4">
         <div className="text-xs font-bold tracking-[0.14em] uppercase opacity-70">
-          {cap.usedIn.map((r) => projectTitle(r) ?? r).join(' · ')}
+          {cap.usedIn.map((r) => projectTitle(r) ?? r).join(', ')}
         </div>
         {cap.stat && (
           <div>

@@ -11,7 +11,7 @@ proof:
     label: of requests served with the login service down
 title: Mini LeetCode
 category: Distributed systems
-summary: "A distributed code judge: submissions are queued and run in sandboxed containers, and an AI suggests hints when code fails."
+summary: "A distributed code judge. Submissions are queued and run in sandboxed containers, and an AI suggests hints when code fails."
 tagline: "A LeetCode-style judge built as five services. Submit Python code, it runs in a locked-down sandbox against hidden tests, and the verdict streams back live. A local AI model explains failures, but never decides the verdict."
 role: "I built the catalog & leaderboard, the React frontend and observability"
 stack: [React, TypeScript, Spring Boot, Go, Python, RabbitMQ, PostgreSQL, Envoy, Docker, Prometheus, Grafana, Ollama]
@@ -33,7 +33,7 @@ clips:
   - title: A judge worker crashes and the system recovers
     src: /projects/mini-leetcode/clip-recover.mp4
 architecture:
-  summary: "A React app talks to an Envoy gateway, which checks tokens once and routes to five services. Submissions flow through RabbitMQ to stateless judge workers, which run each test case in a sandbox from the Spawner; verdicts fan back out to the services that need them."
+  summary: "A React app talks to an Envoy gateway, which checks tokens once and routes to five services. Submissions flow through RabbitMQ to stateless judge workers, which run each test case in a sandbox from the Spawner. Verdicts fan back out to the services that need them."
   client:
     title: React web app
     detail: TypeScript, live verdicts over SSE
@@ -58,7 +58,7 @@ architecture:
 story:
   - type: overview
     heading: "Running strangers' code, **safely**"
-    stat: { value: "< 40 ms", label: "to accept a burst of 40 submissions; every one then judged correctly" }
+    stat: { value: "< 40 ms", label: "to accept a burst of 40 submissions, every one then judged correctly" }
   - type: built
     heading: "My three **parts**"
     stat: { value: "3", label: parts of the system I built }
@@ -100,9 +100,9 @@ diagram:
     - { title: Submission, detail: outbox, queue: job, info: "Saves the submission and its judge job in one transaction, so nothing the API accepts is lost." }
     - { title: AI explainer, detail: never decides, info: "A local model (qwen2.5-coder:7b on Ollama) explains failures. It never decides the verdict." }
     - { title: Catalog, detail: leaderboard, mine: true, queue: verdict, info: "Versioned, immutable test sets, and a leaderboard recomputed from verdicts." }
-  queue: { title: RabbitMQ, detail: jobs · verdicts, info: "Job queue and verdict fan-out." }
+  queue: { title: RabbitMQ, detail: jobs and verdicts, info: "Job queue and verdict fan-out." }
   worker: { title: Judge + Spawner, detail: "sandboxed runs, only one with Docker", info: "Stateless judge workers run each test case in a sandbox from the Spawner's warm pool. Only the Spawner holds Docker." }
-  observability: { title: Prometheus + Grafana, detail: 9 dashboards watching every box above, mine: true, info: "Prometheus scrapes ten targets every 5 seconds; nine Grafana dashboards cover queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use." }
+  observability: { title: Prometheus + Grafana, detail: 9 dashboards watching every box above, mine: true, info: "Prometheus scrapes ten targets every 5 seconds, and nine Grafana dashboards cover queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use." }
 decisions:
   - title: Outbox, not publishing straight to the queue
     body: "A database write and a message publish can't share one transaction. Saving the job in the same transaction as the submission means nothing the API accepts is ever lost, even if the broker is down."
@@ -152,8 +152,8 @@ results:
       outcome: Verdicts unaffected, hints resumed
 
 ---
-I wanted to see what it takes to run strangers' code safely and still answer quickly. Mini LeetCode is a small LeetCode-style judge: pick a problem, try your code against the samples, submit, and watch the verdict arrive live.
+I wanted to see what it takes to run strangers' code safely and still answer quickly. Mini LeetCode is a small LeetCode-style judge. You pick a problem, try your code against the samples, submit, and watch the verdict arrive live.
 
-Behind the editor, the submission and its judge job are saved in one transaction and published to RabbitMQ from an outbox. A stateless judge worker fetches the problem's hidden test set and runs each case in a locked-down sandbox from the Spawner's warm pool: no network, a read-only filesystem and CPU and memory limits. The verdict fans back out to the submission service, the leaderboard and, if the code failed, the AI service, which asks a local model for a hint. The whole system starts with one docker compose up at no running cost.
+Behind the editor, the submission and its judge job are saved in one transaction and published to RabbitMQ from an outbox. A stateless judge worker fetches the problem's hidden test set and runs each case in a locked-down sandbox from the Spawner's warm pool, with no network, a read-only filesystem and CPU and memory limits. The verdict fans back out to the submission service, the leaderboard and, if the code failed, the AI service, which asks a local model for a hint. The whole system starts with one docker compose up at no running cost.
 
-My part was the catalog and leaderboard service in Spring Boot, with versioned, immutable test sets and a leaderboard recomputed from verdicts; the React frontend; and observability, with Prometheus scraping ten targets every 5 seconds and nine Grafana dashboards covering queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use.
+My part was the catalog and leaderboard service in Spring Boot, with versioned, immutable test sets and a leaderboard recomputed from verdicts. I also built the React frontend and the observability, with Prometheus scraping ten targets every 5 seconds and nine Grafana dashboards covering queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use.
