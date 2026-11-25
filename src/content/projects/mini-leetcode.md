@@ -75,12 +75,12 @@ story:
     stat: { value: "5", label: services }
   - type: decision
     heading: "Recompute, don't **increment**"
-    stat: { value: "0", label: wrong scores with 30% of verdicts duplicated and shuffled }
+    stat: { value: "100%", label: of scores correct with 30% of verdicts duplicated and shuffled }
     mine: true
     decisions: [1]
   - type: decisions
     heading: "What it **cost**"
-    stat: { value: "0", label: submissions lost through a broker outage and a crash }
+    stat: { value: "300 / 300", label: submissions accepted with RabbitMQ stopped }
     decisions: [0, 2]
   - type: latency
     heading: "Where the time **goes**"
