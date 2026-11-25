@@ -3,8 +3,8 @@ status: shipped
 slug: mini-leetcode
 order: 1
 proof:
-  - value: "0"
-    label: submissions lost through a broker outage and a crash
+  - value: "300 / 300"
+    label: submissions accepted with RabbitMQ stopped
   - value: "246 ms"
     label: from submit to verdict in the browser, p95 at peak
   - value: "100%"
