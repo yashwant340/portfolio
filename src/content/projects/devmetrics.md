@@ -3,12 +3,12 @@ status: shipped
 slug: devmetrics
 order: 2
 proof:
+  - value: "71%"
+    label: fewer GitHub calls on a re-sync than on the first sync
+  - value: "4"
+    label: kinds of GitHub data synced
   - value: "0–100"
     label: health score, four 25-point parts
-  - value: "6 h"
-    label: between automatic syncs
-  - value: "15 min"
-    label: access tokens, refreshed silently
 title: DevMetrics
 category: Analytics
 summary: GitHub analytics that syncs pull requests, reviews and commits, then scores repository health over time.
