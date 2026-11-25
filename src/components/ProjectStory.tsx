@@ -434,30 +434,36 @@ function Decision({ title, body, tradeoff }: { title: string; body: string; trad
   )
 }
 
-// The architecture as a short stacked flow, for projects without a drawn map
-function SimpleArch({ project }: { project: ShippedWithHtml }) {
-  const a = project.architecture
-  const Box = ({ title, detail, strong }: { title: string; detail: string; strong?: boolean }) => (
+function ArchBox({ title, detail, strong }: { title: string; detail: string; strong?: boolean }) {
+  return (
     <div className={`rounded-2xl px-4 py-3 ${strong ? 'bg-feature text-feature-fg' : 'border-[1.5px] border-line bg-bg'}`}>
       <b className="block text-[15px]">{title}</b>
       <span className={`text-[13px] leading-snug ${strong ? 'opacity-80' : 'text-muted'}`}>{detail}</span>
     </div>
   )
-  const Link_ = ({ label }: { label: string }) => (
+}
+
+function ArchLink({ label }: { label: string }) {
+  return (
     <div className="flex items-center gap-2 py-1.5 pl-5 text-xs text-muted">
       <span aria-hidden className="h-4 w-px bg-fg/30" /> {label}
     </div>
   )
+}
+
+// The architecture as a short stacked flow, for projects without a drawn map
+function SimpleArch({ project }: { project: ShippedWithHtml }) {
+  const a = project.architecture
   return (
     <div className="mt-6 max-w-[48ch]">
-      <Box {...a.client} />
-      <Link_ label={a.clientLink} />
-      <Box {...a.server} strong />
+      <ArchBox {...a.client} />
+      <ArchLink label={a.clientLink} />
+      <ArchBox {...a.server} strong />
       <div className="grid gap-x-3 sm:grid-cols-2">
         {a.services.map((sv) => (
           <div key={sv.title}>
-            <Link_ label={sv.link} />
-            <Box title={sv.title} detail={sv.detail} />
+            <ArchLink label={sv.link} />
+            <ArchBox title={sv.title} detail={sv.detail} />
           </div>
         ))}
       </div>
