@@ -460,6 +460,8 @@ body::before {
   .story-kicker { grid-column: 2; grid-row: 1; align-self: end; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--fg) 75%, transparent); }
   .story-num { grid-column: 1; grid-row: 1 / span 2; align-self: center; font-size: 62px; line-height: 0.85; white-space: nowrap; }
   .story-stage.is-mine .story-num { color: var(--accent); }
+  /* Wide values such as "300 / 300" use a smaller size so they fit the panel */
+  .story-num.is-long { font-size: 40px; }
   .story-cap { grid-column: 2; grid-row: 2; align-self: start; margin-top: 4px; font-size: 14px; line-height: 1.35; }
   .story-badge { display: none; }
   .story-dots { position: absolute; right: 20px; bottom: 8px; left: 20px; display: flex; gap: 8px; pointer-events: none; }
@@ -497,6 +499,7 @@ body::before {
     .story-stage-text { display: block; }
     .story-kicker { margin-bottom: 10px; font-size: 12px; }
     .story-num { font-size: clamp(110px, 12.5vw, 200px); }
+    .story-num.is-long { font-size: clamp(72px, 7vw, 112px); }
     .story-cap { max-width: 24ch; margin-top: 16px; font-size: 18px; }
     .story-badge {
       position: absolute;

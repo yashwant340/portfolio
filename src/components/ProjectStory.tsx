@@ -124,7 +124,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
               <div className="story-kicker">
                 {num(active)} · {typeLabel[current.type]}
               </div>
-              <div className="story-num font-serif">{current.stat.value}</div>
+              <div className={`story-num font-serif ${current.stat.value.length > 6 ? 'is-long' : ''}`}>{current.stat.value}</div>
               <div className="story-cap">{current.stat.label}</div>
             </div>
             <div className="story-dots">
