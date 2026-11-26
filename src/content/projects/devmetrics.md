@@ -3,12 +3,12 @@ status: shipped
 slug: devmetrics
 order: 2
 proof:
+  - value: "71%"
+    label: fewer GitHub calls on a re-sync than on the first sync
+  - value: "4"
+    label: kinds of GitHub data synced
   - value: "0–100"
     label: health score, four 25-point parts
-  - value: "6 h"
-    label: between automatic syncs
-  - value: "15 min"
-    label: access tokens, refreshed silently
 title: DevMetrics
 category: Analytics
 summary: GitHub analytics that syncs pull requests, reviews and commits, then scores repository health over time.
@@ -31,6 +31,37 @@ clips:
     src: /projects/devmetrics/clip-sync.mp4
   - title: Compare two repositories
     src: /projects/devmetrics/clip-compare.mp4
+story:
+  - type: overview
+    heading: Is this repo **healthy?**
+    stat: { value: "4", label: kinds of GitHub data synced }
+  - type: feature
+    label: Sync
+    heading: Sync only **what's new**
+    stat: { value: "71%", label: fewer GitHub calls on a re-sync than on the first sync }
+    challenge: 0
+    limits: [0, 1]
+  - type: feature
+    label: Sign-in
+    heading: No tokens in the **browser**
+    stat: { value: "15 min", label: "access tokens, with a 7-day refresh token" }
+    challenge: 1
+    decisions: [1]
+    limits: [3]
+  - type: feature
+    label: Health score
+    heading: A score you can **trend**
+    stat: { value: "0–100", label: "health score, four 25-point parts" }
+    challenge: 2
+    decisions: [2]
+    limits: [2]
+  - type: feature
+    label: Compare
+    heading: Two repos, **side by side**
+    paragraph: 2
+  - type: architecture
+    heading: One service, **on purpose**
+    stat: { value: "1", label: "service, one database, one deploy" }
 architecture:
   summary: Two apps. A React client that only renders and fetches, and a Spring Boot API that owns auth, GitHub integration, persistence and metric computation.
   client:
@@ -47,9 +78,25 @@ architecture:
     - title: GitHub API
       detail: OAuth, repos, PRs, commits
       link: REST, paginated
+diagram:
+  requestLabel: REST + httpOnly cookies
+  trace: one sync
+  client: { title: React client, detail: renders and fetches, info: "Renders and fetches only. It never sees a token, and on a 401 it refreshes once and retries the request." }
+  server: { title: Spring Boot API, detail: one deploy, info: "One app that owns auth, GitHub integration, persistence and metric computation." }
+  modules:
+    - { title: Auth, detail: GitHub OAuth, info: "GitHub OAuth login. JWTs live in httpOnly cookies: a 15-minute access token and a 7-day refresh token." }
+    - { title: Sync, detail: only what's new, info: "The first sync imports the full commit history. Later syncs fetch only newer commits, de-duplicated by SHA." }
+    - { title: Metrics, detail: 0–100 score, info: "After each sync, review speed, merge speed, churn and team activity become a 0–100 health score, saved as a daily snapshot." }
+    - { title: Scheduler, detail: every 6 hours, info: "Syncs connected repositories automatically every 6 hours." }
+  traceModule: 1
+  stores:
+    - { title: PostgreSQL, detail: "PRs, commits, snapshots", link: JPA, info: "Stores pull requests, commits, reviews, contributors and the daily snapshots." }
+    - { title: GitHub API, detail: "repos, PRs, commits", link: "REST, paginated", info: "Source of repositories, pull requests, reviews and commits, read page by page." }
+keyDecision: 0
 decisions:
   - title: One service, not microservices
-    body: Auth, sync and metrics share one database and one deploy. Nothing needs to scale on its own, and it fits a free hosting tier for the live app.
+    body: "DevMetrics is about features: sync, sign-in, scoring and comparison. In one service with one database, a new feature is one change and one deploy, and nothing here needs to scale on its own. When a system does, I split it, as in Mini LeetCode."
+    tradeoff: "Sign-in, sync, metrics and the scheduler share one app, so none of them can scale on its own. That never mattered here, because I built it to track my own repositories and to show my work."
   - title: API calls get a 401, page loads redirect
     body: When a session expires, the React app gets a 401 it can act on, so it refreshes the token and retries instead of being bounced to GitHub mid-request.
   - title: Daily snapshots, not recalculating on every visit
@@ -58,7 +105,7 @@ challenges:
   - title: Incremental sync
     body: The first sync imports the full commit history. Later syncs fetch only commits newer than the latest stored one, with a one-minute overlap and SHA de-duplication so nothing is missed or counted twice.
   - title: Token-free frontend
-    body: JWTs live in httpOnly cookies, with a 15-minute access token and a 7-day refresh token. The client never sees a token; on a 401 it refreshes once and retries the request transparently.
+    body: JWTs live in httpOnly cookies, with a 15-minute access token and a 7-day refresh token. The client never sees a token. On a 401 it refreshes once and retries the request transparently.
   - title: A health score you can trend
     body: Four 25-point dimensions (review speed, merge speed, churn and team activity) are computed after each sync and saved as a daily snapshot, so changes show up as trends.
 limitations:

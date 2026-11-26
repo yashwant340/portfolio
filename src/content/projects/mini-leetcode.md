@@ -33,7 +33,7 @@ clips:
   - title: A judge worker crashes and the system recovers
     src: /projects/mini-leetcode/clip-recover.mp4
 architecture:
-  summary: "A React app talks to an Envoy gateway, which checks tokens once and routes to five services. Submissions flow through RabbitMQ to stateless judge workers, which run each test case in a sandbox from the Spawner; verdicts fan back out to the services that need them."
+  summary: "A React app talks to an Envoy gateway, which checks tokens once and routes to five services. Submissions flow through RabbitMQ to stateless judge workers, which run each test case in a sandbox from the Spawner. Verdicts fan back out to the services that need them."
   client:
     title: React web app
     detail: TypeScript, live verdicts over SSE
@@ -58,7 +58,7 @@ architecture:
 story:
   - type: overview
     heading: "Running strangers' code, **safely**"
-    stat: { value: "< 40 ms", label: "to accept a burst of 40 submissions; every one then judged correctly" }
+    stat: { value: "< 40 ms", label: "to accept a burst of 40 submissions, every one then judged correctly" }
   - type: built
     heading: "My three **parts**"
     stat: { value: "3", label: parts of the system I built }
@@ -102,7 +102,7 @@ diagram:
     - { title: Catalog, detail: leaderboard, mine: true, queue: verdict, info: "Versioned, immutable test sets, and a leaderboard recomputed from verdicts." }
   queue: { title: RabbitMQ, detail: jobs · verdicts, info: "Job queue and verdict fan-out." }
   worker: { title: Judge + Spawner, detail: "sandboxed runs, only one with Docker", info: "Stateless judge workers run each test case in a sandbox from the Spawner's warm pool. Only the Spawner holds Docker." }
-  observability: { title: Prometheus + Grafana, detail: 9 dashboards watching every box above, mine: true, info: "Prometheus scrapes ten targets every 5 seconds; nine Grafana dashboards cover queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use." }
+  observability: { title: Prometheus + Grafana, detail: 9 dashboards watching every box above, mine: true, info: "Prometheus scrapes ten targets every 5 seconds, and nine Grafana dashboards cover queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use." }
 decisions:
   - title: Outbox, not publishing straight to the queue
     body: "A database write and a message publish can't share one transaction. Saving the job in the same transaction as the submission means nothing the API accepts is ever lost, even if the broker is down."
@@ -156,4 +156,4 @@ I wanted to see what it takes to run strangers' code safely and still answer qui
 
 Behind the editor, the submission and its judge job are saved in one transaction and published to RabbitMQ from an outbox. A stateless judge worker fetches the problem's hidden test set and runs each case in a locked-down sandbox from the Spawner's warm pool: no network, a read-only filesystem and CPU and memory limits. The verdict fans back out to the submission service, the leaderboard and, if the code failed, the AI service, which asks a local model for a hint. The whole system starts with one docker compose up at no running cost.
 
-My part was the catalog and leaderboard service in Spring Boot, with versioned, immutable test sets and a leaderboard recomputed from verdicts; the React frontend; and observability, with Prometheus scraping ten targets every 5 seconds and nine Grafana dashboards covering queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use.
+My part was the catalog and leaderboard service in Spring Boot, with versioned, immutable test sets and a leaderboard recomputed from verdicts. I also built the React frontend and the observability, with Prometheus scraping ten targets every 5 seconds and nine Grafana dashboards covering queues, outbox lag, sandbox pool size, leaderboard freshness and AI token use.

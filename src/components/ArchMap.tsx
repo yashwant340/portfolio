@@ -1,16 +1,26 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import type { ShippedProject } from '../content/schema'
 
-type Diagram = NonNullable<ShippedProject['diagram']>
+type AnyDiagram = NonNullable<ShippedProject['diagram']>
+type Diagram = Exclude<AnyDiagram, { modules: unknown }>
+type Mono = Extract<AnyDiagram, { modules: unknown }>
 type MapNode = Diagram['client']
-type Box = { node: MapNode; key: string; x: number; y: number; w: number; h: number }
+type Box = { node: MapNode; key: string; x: number; y: number; w: number; h: number; container?: boolean }
+type Layout = {
+  viewBox: string
+  boxes: Box[]
+  edges: { d: string; dashed?: boolean }[]
+  labels: { x: number; y: number; text: string }[]
+  route: string
+  group: { x: number; y: number; w: number; h: number } | null
+}
 
 const H = 44
 const LOOP_MS = 7000
 
 // Two hand-tuned layouts: a wide one, and a tall one for phones where the wide
 // drawing would shrink its text below a readable size.
-function wideLayout(d: Diagram) {
+function wideLayout(d: Diagram): Layout {
   const n = d.services.length
   const gap = 12
   const w = (484 - gap * (n - 1)) / n
@@ -44,7 +54,7 @@ function wideLayout(d: Diagram) {
   return { viewBox: '0 0 520 470', boxes, edges, labels, route, group: null }
 }
 
-function tallLayout(d: Diagram) {
+function tallLayout(d: Diagram): Layout {
   const services = d.services.map((node, i) => ({
     node,
     key: `s${i}`,
@@ -92,13 +102,53 @@ function tallLayout(d: Diagram) {
   }
 }
 
+// Single service, tall (phones): modules in a 2 × 2 grid inside the API box
+function monoTall(d: Mono): Layout {
+  const modules = d.modules.map((node, i) => ({
+    node,
+    key: `m${i}`,
+    x: i % 2 ? 175 : 16,
+    y: 128 + Math.floor(i / 2) * 52,
+    w: 149,
+    h: H,
+  }))
+  const bottom = 128 + Math.ceil(modules.length / 2) * 52 + 4
+  const sy = bottom + 50
+  const stores = d.stores.map((node, i) => ({ node, key: `st${i}`, x: i ? 175 : 16, y: sy, w: 149, h: H }))
+  const cx = (b: Box) => b.x + b.w / 2
+  const t = modules[Math.min(d.traceModule, modules.length - 1)]
+  const [a, b] = stores.map(cx)
+  const mid = bottom + 26
+  return {
+    viewBox: `0 0 340 ${sy + H + 10}`,
+    boxes: [
+      { node: d.client, key: 'client', x: 95, y: 10, w: 150, h: H },
+      { node: d.server, key: 'server', x: 6, y: 80, w: 328, h: bottom - 80, container: true },
+      ...modules,
+      ...stores,
+    ],
+    edges: [{ d: 'M170 54 V80' }, { d: `M${a} ${bottom} V${sy}` }, { d: `M${b} ${bottom} V${sy}` }],
+    labels: [
+      { x: 178, y: 72, text: d.requestLabel },
+      { x: a + 8, y: mid + 4, text: d.stores[0].link },
+      { x: b + 8, y: mid + 4, text: d.stores[1].link },
+    ],
+    route: `M170 32 V114 H${cx(t)} V${t.y + 22} V${mid} H${b} V${sy + 22} V${mid} H${a} V${sy + 22} V${mid} H${cx(t)} V114 H170 V32`,
+    group: null,
+  }
+}
+
 // The architecture as a drawn map: solid lines are requests, dashed lines go
-// through the queue, and a dot keeps tracing one submission's route. Hover, tap
+// through the queue, and a dot keeps tracing one request's route. Hover, tap
 // or focus a box to read what it does; parts marked `mine` are dark and ringed.
-export function ArchMap({ diagram }: { diagram: Diagram }) {
+export function ArchMap({ diagram }: { diagram: AnyDiagram }) {
   const [selected, setSelected] = useState<MapNode | null>(null)
-  const wide = wideLayout(diagram)
-  const tall = tallLayout(diagram)
+  const mono = 'modules' in diagram
+  // A single-service map is narrow enough that its tall layout reads better at every width
+  const wide = mono ? monoTall(diagram) : wideLayout(diagram)
+  const tall = mono ? monoTall(diagram) : tallLayout(diagram)
+  const trace = mono ? diagram.trace : 'one submission'
+  const anyMine = wide.boxes.some((b) => b.node.mine)
 
   return (
     <div className="mt-5">
@@ -113,14 +163,16 @@ export function ArchMap({ diagram }: { diagram: Diagram }) {
           </>
         ) : (
           <>
-            <b className="text-feature-accent">Hover or tap a box.</b> The moving dot traces one submission through the system.
+            <b className="text-feature-accent">Hover or tap a box.</b> The moving dot traces {trace} through the system.
           </>
         )}
       </div>
-      <p className="mt-3 flex items-center gap-2 text-[13px] text-muted">
-        <span aria-hidden className="inline-block size-3 rounded-[3px] bg-feature ring-2 ring-accent" />
-        Built by me
-      </p>
+      {anyMine && (
+        <p className="mt-3 flex items-center gap-2 text-[13px] text-muted">
+          <span aria-hidden className="inline-block size-3 rounded-[3px] bg-feature ring-2 ring-accent" />
+          Built by me
+        </p>
+      )}
     </div>
   )
 }
@@ -132,7 +184,7 @@ function MapSvg({
   onSelect,
   label,
 }: {
-  layout: ReturnType<typeof wideLayout> | ReturnType<typeof tallLayout>
+  layout: Layout
   className: string
   selected: MapNode | null
   onSelect: (n: MapNode) => void
@@ -196,13 +248,13 @@ function MapSvg({
           role="button"
           aria-label={`${b.node.title}${b.node.mine ? ', built by me' : ''}`}
           aria-pressed={selected === b.node}
-          className={`arch-node ${b.node.mine ? 'is-mine' : ''} ${selected === b.node ? 'is-selected' : ''}`}
+          className={`arch-node ${b.node.mine ? 'is-mine' : ''} ${b.container ? 'is-container' : ''} ${selected === b.node ? 'is-selected' : ''}`}
           onPointerEnter={() => onSelect(b.node)}
           onClick={() => onSelect(b.node)}
           onFocus={() => onSelect(b.node)}
           onKeyDown={(e) => onKey(e, b.node)}
         >
-          <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={12} />
+          <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={b.container ? 18 : 12} />
           <text x={b.x + 13} y={b.y + 19}>
             {b.node.title}
           </text>

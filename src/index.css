@@ -465,9 +465,10 @@ body::before {
   .story-cap { grid-column: 2; grid-row: 2; align-self: start; margin-top: 4px; font-size: 14px; line-height: 1.35; }
   .story-badge { display: none; }
   .story-dots { position: absolute; right: 20px; bottom: 8px; left: 20px; display: flex; gap: 8px; pointer-events: none; }
-  .story-dots button { flex: 1; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--fg) 20%, transparent); }
-  .story-dots button.is-on { background: var(--fg); }
-  .story-dots button.is-mine.is-on { background: var(--accent); }
+  .story-dots span { flex: 1; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--fg) 20%, transparent); }
+  .story-dots span.is-on { background: var(--fg); }
+  .story-dots span.is-mine.is-on { background: var(--accent); }
+  .story-rail { display: none; }
   .story-chapter { position: relative; padding: 56px 0 20px 18px; scroll-margin-top: 200px; }
   .story-chapter::before {
     content: '';
@@ -483,7 +484,25 @@ body::before {
   }
   .story-chapter.is-on::before { height: min(60%, 320px); }
   @media (min-width: 1024px) {
-    .story-grid { grid-template-columns: 1fr 1fr; gap: 64px; padding: 110px 0 40px; }
+    .story-grid { grid-template-columns: 150px minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; padding: 110px 0 40px; }
+    .story-rail { position: sticky; top: 96px; display: flex; flex-direction: column; align-self: start; gap: 2px; }
+    .story-rail button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 0 0 14px;
+      border-left: 3px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .story-rail button:hover { color: var(--fg); border-color: color-mix(in srgb, var(--fg) 45%, transparent); }
+    .story-rail button.is-done { border-color: color-mix(in srgb, var(--fg) 45%, transparent); }
+    .story-rail button.is-on { border-color: var(--accent); color: var(--fg); font-weight: 600; }
+    .story-rail-num { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); }
     .story-stage {
       top: 96px;
       display: flex;
@@ -492,14 +511,14 @@ body::before {
       align-self: start;
       height: min(calc(100vh - 140px), 600px);
       margin: 0;
-      padding: 48px;
+      padding: 44px;
       border-radius: 32px;
     }
     .story-stage::after { top: -90px; right: -90px; width: 260px; height: 260px; }
     .story-stage-text { display: block; }
     .story-kicker { margin-bottom: 10px; font-size: 12px; }
-    .story-num { font-size: clamp(110px, 12.5vw, 200px); }
-    .story-num.is-long { font-size: clamp(72px, 7vw, 112px); }
+    .story-num { font-size: clamp(96px, 10vw, 160px); }
+    .story-num.is-long { font-size: clamp(64px, 6vw, 100px); }
     .story-cap { max-width: 24ch; margin-top: 16px; font-size: 18px; }
     .story-badge {
       position: absolute;
@@ -520,14 +539,8 @@ body::before {
       transition: opacity 0.3s, transform 0.3s;
     }
     .story-stage.is-mine .story-badge { opacity: 1; transform: none; }
-    .story-dots { right: 48px; bottom: 16px; left: 48px; pointer-events: auto; }
-    .story-dots button { position: relative; height: 44px; background: transparent; cursor: pointer; }
-    .story-dots button::after { content: ''; position: absolute; top: 20px; right: 0; left: 0; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--fg) 20%, transparent); }
-    .story-dots button.is-on,
-    .story-dots button.is-mine.is-on { background: transparent; }
-    .story-dots button.is-on::after { background: var(--fg); }
-    .story-dots button.is-mine.is-on::after { background: var(--accent); }
-    .story-chapter { display: flex; flex-direction: column; justify-content: center; min-height: 72vh; padding: 0 0 0 26px; scroll-margin-top: 120px; }
+    .story-dots { display: none; }
+    .story-chapter { display: flex; flex-direction: column; justify-content: center; min-height: 72vh; padding: 64px 0 64px 26px; scroll-margin-top: 120px; }
     .story-chapter::before { width: 4px; }
   }
 
@@ -546,6 +559,7 @@ body::before {
   .arch-node:hover rect, .arch-node.is-selected rect { stroke: var(--accent); stroke-width: 2.5; }
   .arch-node:focus-visible rect { stroke: var(--accent); stroke-width: 3.5; }
   .arch-dot { fill: var(--accent); }
+  .arch-node.is-container rect { fill: color-mix(in srgb, var(--sage) 28%, var(--bg)); }
 
   /* Cursor ring: an accent that trails the normal pointer */
   .cursor-ring {

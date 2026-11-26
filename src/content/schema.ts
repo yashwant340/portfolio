@@ -95,14 +95,21 @@ const mapNode = z.object({
 
 // One chapter of the story layout. `type` picks which part of the write-up it shows;
 // `decisions` are indexes into `decisions`, `highlight` names a latency row or failure to mark as mine.
+// A `feature` chapter groups one feature's write-up: `paragraph` (of the body text), `challenge`,
+// `decisions` and `limits` are indexes. The pinned panel shows `stat`, or the chapter's name
+// when it has no honest number. `label` names the chapter in the rail and kicker.
 const storyChapter = z.object({
-  type: z.enum(['overview', 'built', 'architecture', 'decision', 'decisions', 'latency', 'failures']),
+  type: z.enum(['overview', 'built', 'architecture', 'decision', 'decisions', 'latency', 'failures', 'feature']),
+  label: text.optional(),
   heading: text,
-  stat: z.object({ value: text, label: text }),
+  stat: z.object({ value: text, label: text }).optional(),
   mine: z.boolean().default(false),
   items: z.array(z.object({ title: text, body: text })).optional(),
   decisions: z.array(z.number().int().min(0)).optional(),
   highlight: text.optional(),
+  paragraph: z.number().int().min(0).optional(),
+  challenge: z.number().int().min(0).optional(),
+  limits: z.array(z.number().int().min(0)).optional(),
 })
 
 const shippedProject = z.object({
@@ -142,21 +149,38 @@ const shippedProject = z.object({
   }),
   // Optional story layout (see storyChapter) and the detailed map its architecture chapter uses
   story: z.array(storyChapter).min(2).optional(),
+  // Either a distributed map (gateway, services, queue, worker) or a single-service one
+  // (an API holding `modules`, with `stores` below it). Both trace one request with a moving dot.
   diagram: z
-    .object({
-      // Label on the line from the client to the gateway
-      requestLabel: text,
-      client: mapNode,
-      gateway: mapNode,
-      services: z.array(mapNode).min(1).max(4),
-      queue: mapNode,
-      worker: mapNode,
-      observability: mapNode.optional(),
-    })
+    .union([
+      z.object({
+        // Label on the line from the client to the gateway
+        requestLabel: text,
+        client: mapNode,
+        gateway: mapNode,
+        services: z.array(mapNode).min(1).max(4),
+        queue: mapNode,
+        worker: mapNode,
+        observability: mapNode.optional(),
+      }),
+      z.object({
+        requestLabel: text,
+        // What the moving dot traces, e.g. "one sync"
+        trace: text,
+        client: mapNode,
+        server: mapNode,
+        modules: z.array(mapNode).min(2).max(4),
+        // Which module the dot passes through
+        traceModule: z.number().int().min(0),
+        stores: z.array(mapNode.extend({ link: text })).length(2),
+      }),
+    ])
     .optional(),
   // Design choices and why, shown between Architecture and Key challenges
   // `tradeoff` is what the choice cost; shown as a muted line under the reason
   decisions: z.array(z.object({ title: text, body: text, tradeoff: text.optional() })).optional(),
+  // Index of the decision that frames the whole project; story pages show it in a band above the story
+  keyDecision: z.number().int().min(0).optional(),
   // Measured results: headline numbers, a p50/p99 latency chart and injected failures
   results: z
     .object({
