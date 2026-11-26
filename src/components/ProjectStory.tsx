@@ -128,8 +128,8 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
             <h2 id="key-decision" className="mt-3 font-serif text-[clamp(36px,4.4vw,56px)] leading-none font-normal">
               {key.title}
             </h2>
-            <div className="mt-7 grid gap-7 md:grid-cols-[1.5fr_1fr] md:gap-12">
-              <p className="text-[17px] leading-[1.7] opacity-90">{key.body}</p>
+            <div className={`mt-7 grid gap-7 md:gap-12 ${key.tradeoff ? 'md:grid-cols-[1.5fr_1fr]' : ''}`}>
+              <p className={`text-[17px] leading-[1.7] opacity-90 ${key.tradeoff ? '' : 'max-w-[70ch] md:text-[19px]'}`}>{key.body}</p>
               {key.tradeoff && (
                 <p className="border-t border-current/20 pt-5 text-[15px] leading-relaxed md:border-t-0 md:border-l md:pt-0 md:pl-8">
                   <b className="mb-1.5 block text-xs tracking-[0.14em] text-feature-accent uppercase">Trade-off</b>
@@ -320,13 +320,15 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
       )
     }
     case 'feature': {
-      const paragraph = c.paragraph !== undefined ? project.html.split('</p>')[c.paragraph] : undefined
+      const parts = project.html.split('</p>')
+      const paragraph =
+        c.paragraph === undefined ? undefined : [c.paragraph].flat().map((i) => (parts[i] ?? '') + '</p>').join('')
       const challenge = c.challenge !== undefined ? project.challenges?.[c.challenge] : undefined
       const decisions = (c.decisions ?? []).map((i) => project.decisions?.[i]).filter((d) => !!d)
       const limits = (c.limits ?? []).map((i) => project.limitations?.[i]).filter((l) => !!l)
       return (
         <div className="max-w-[48ch]">
-          {paragraph && <div className={`${prose} [&_strong]:text-fg`} dangerouslySetInnerHTML={{ __html: paragraph + '</p>' }} />}
+          {paragraph && <div className={`${prose} space-y-4 [&_strong]:text-fg`} dangerouslySetInnerHTML={{ __html: paragraph }} />}
           {challenge && (
             <div className={paragraph ? 'mt-6' : ''}>
               <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">The hard part · {challenge.title}</div>
