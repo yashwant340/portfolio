@@ -81,11 +81,11 @@ architecture:
 diagram:
   requestLabel: REST + httpOnly cookies
   trace: one sync
-  client: { title: React client, detail: renders and fetches, info: "Renders and fetches only. It never sees a token; on a 401 it refreshes once and retries the request." }
+  client: { title: React client, detail: renders and fetches, info: "Renders and fetches only. It never sees a token, and on a 401 it refreshes once and retries the request." }
   server: { title: Spring Boot API, detail: one deploy, info: "One app that owns auth, GitHub integration, persistence and metric computation." }
   modules:
     - { title: Auth, detail: GitHub OAuth, info: "GitHub OAuth login. JWTs live in httpOnly cookies: a 15-minute access token and a 7-day refresh token." }
-    - { title: Sync, detail: only what's new, info: "The first sync imports the full commit history; later syncs fetch only newer commits, de-duplicated by SHA." }
+    - { title: Sync, detail: only what's new, info: "The first sync imports the full commit history. Later syncs fetch only newer commits, de-duplicated by SHA." }
     - { title: Metrics, detail: 0–100 score, info: "After each sync, review speed, merge speed, churn and team activity become a 0–100 health score, saved as a daily snapshot." }
     - { title: Scheduler, detail: every 6 hours, info: "Syncs connected repositories automatically every 6 hours." }
   traceModule: 1
@@ -96,7 +96,7 @@ keyDecision: 0
 decisions:
   - title: One service, not microservices
     body: "DevMetrics is about features: sync, sign-in, scoring and comparison. In one service with one database, a new feature is one change and one deploy, and nothing here needs to scale on its own. When a system does, I split it, as in Mini LeetCode."
-    tradeoff: "Sign-in, sync, metrics and the scheduler run in one app, so if syncing gets slow I can't add servers just for sync; I'd run more copies of the whole app."
+    tradeoff: "Sign-in, sync, metrics and the scheduler share one app, so none of them can scale on its own. That never mattered here, because I built it to track my own repositories and to show my work."
   - title: API calls get a 401, page loads redirect
     body: When a session expires, the React app gets a 401 it can act on, so it refreshes the token and retries instead of being bounced to GitHub mid-request.
   - title: Daily snapshots, not recalculating on every visit
@@ -105,7 +105,7 @@ challenges:
   - title: Incremental sync
     body: The first sync imports the full commit history. Later syncs fetch only commits newer than the latest stored one, with a one-minute overlap and SHA de-duplication so nothing is missed or counted twice.
   - title: Token-free frontend
-    body: JWTs live in httpOnly cookies, with a 15-minute access token and a 7-day refresh token. The client never sees a token; on a 401 it refreshes once and retries the request transparently.
+    body: JWTs live in httpOnly cookies, with a 15-minute access token and a 7-day refresh token. The client never sees a token. On a 401 it refreshes once and retries the request transparently.
   - title: A health score you can trend
     body: Four 25-point dimensions (review speed, merge speed, churn and team activity) are computed after each sync and saved as a daily snapshot, so changes show up as trends.
 limitations:

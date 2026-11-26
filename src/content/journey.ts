@@ -14,7 +14,7 @@ export const journey: Journey = {
       title: 'Software Engineer → Specialist Software Engineer',
       place: 'Bangalore',
       org: 'Societe Generale',
-      detail: 'Societe Generale, Bangalore. Promoted in 2026; Star of the Quarter and two Spot Awards.',
+      detail: 'Societe Generale, Bangalore. Promoted in 2026. Star of the Quarter and two Spot Awards.',
     },
     {
       period: 'Sep 2026 — Now',
