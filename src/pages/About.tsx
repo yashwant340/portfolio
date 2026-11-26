@@ -22,9 +22,9 @@ function Highlighted({ text }: { text: string }) {
 
 export function About() {
   useEffect(() => {
-    document.title = `About ${profile.name}`
+    document.title = `About — ${profile.name}`
     return () => {
-      document.title = `${profile.name}, ${profile.role.toLowerCase()}`
+      document.title = `${profile.name} — ${profile.role}`
     }
   }, [])
 

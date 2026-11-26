@@ -77,7 +77,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
           / {project.title}
         </Reveal>
         <Reveal index={1} className="mt-7 text-xs font-bold tracking-[0.16em] text-accent uppercase">
-          {featured && <span className="mr-3">★ Featured</span>}
+          {featured && '★ Featured · '}
           {project.category}
         </Reveal>
         <Reveal index={2}>
@@ -163,8 +163,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
             </span>
             <div key={active} className="story-stage-text">
               <div className="story-kicker" aria-hidden>
-                <span className="mr-2.5">{num(active)}</span>
-                {labelOf(current)}
+                {num(active)} · {labelOf(current)}
               </div>
               {/* No honest number for this chapter: its name stands in */}
               <div className={`story-num font-serif ${(current.stat?.value ?? labelOf(current)).length > 6 ? 'is-long' : ''}`} aria-hidden>
@@ -194,8 +193,7 @@ export function ProjectStory({ project, featured, next }: { project: ShippedWith
                 aria-labelledby={`chapter-${i}`}
               >
                 <div className="text-xs font-bold tracking-[0.16em] text-accent uppercase">
-                  <span className="mr-2.5">{num(i)}</span>
-                  {labelOf(c)}
+                  {num(i)} · {labelOf(c)}
                   {c.mine && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 tracking-[0.08em] text-accent-fg">Mine</span>}
                 </div>
                 <h2 id={`chapter-${i}`} className="mt-3 font-serif text-[clamp(38px,4vw,56px)] leading-none font-normal">
@@ -331,8 +329,7 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
           {paragraph && <div className={`${prose} [&_strong]:text-fg`} dangerouslySetInnerHTML={{ __html: paragraph + '</p>' }} />}
           {challenge && (
             <div className={paragraph ? 'mt-6' : ''}>
-              <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">The hard part</div>
-              <b className="mt-1.5 block text-[17px]">{challenge.title}</b>
+              <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">The hard part · {challenge.title}</div>
               <p className={`${prose} mt-2`}>{challenge.body}</p>
             </div>
           )}
@@ -344,7 +341,8 @@ function ChapterBody({ chapter: c, project }: { chapter: Chapter; project: Shipp
               <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">Next step</div>
               <ul className="m-0 mt-2 list-none p-0">
                 {limits.map((l) => (
-                  <li key={l.issue} className="border-b border-line py-3 text-sm leading-normal">
+                  <li key={l.issue} className="grid grid-cols-[20px_1fr] gap-2 border-b border-line py-3 text-sm leading-normal">
+                    <span aria-hidden className="text-accent">→</span>
                     <span>
                       <b className="font-semibold">{l.issue}.</b> <span className="text-muted">{l.next}</span>
                     </span>

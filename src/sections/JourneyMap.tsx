@@ -122,7 +122,7 @@ export function JourneyMap() {
             viewBox="0 0 100 64"
             className="block h-auto w-full overflow-visible"
             role="img"
-            aria-label={`Map of ${profile.name}'s journey: ${places.join(', then ')}`}
+            aria-label={`Map of ${profile.name}'s journey: ${places.join(' → ')}`}
           >
             <defs>
               <pattern id="journey-dots" width="2.4" height="2.4" patternUnits="userSpaceOnUse">

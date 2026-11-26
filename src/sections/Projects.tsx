@@ -33,7 +33,7 @@ export function Projects() {
         <h2 className="font-serif text-[clamp(42px,5vw,66px)] leading-none">{section.heading}</h2>
         <span className="text-sm text-muted">
           {shippedProjects.length} {section.builtLabel}
-          {upcoming.length > 0 && `, ${upcoming.length} ${section.inProgressLabel}`}
+          {upcoming.length > 0 && ` · ${upcoming.length} ${section.inProgressLabel}`}
         </span>
       </Reveal>
 
@@ -61,7 +61,7 @@ export function Projects() {
               <div className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-muted">{p.summary}</div>
               {p.services && (
                 <div className="mt-3 text-[13px] text-muted">
-                  <span className="font-semibold text-fg">Services:</span> {p.services.join(', ')}
+                  <span className="font-semibold text-fg">Services</span> · {p.services.join(' · ')}
                 </div>
               )}
               {p.stack && (
@@ -112,7 +112,7 @@ function Featured({ project: p }: { project: ShippedWithHtml }) {
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-3 text-xs font-bold tracking-[0.14em] uppercase">
-          <span className="rounded-full bg-feature-accent px-3 py-1 text-feature tracking-[0.06em]">★ Featured {num(0)}</span>
+          <span className="rounded-full bg-feature-accent px-3 py-1 text-feature tracking-[0.06em]">★ Featured · {num(0)}</span>
           <span className="opacity-70">{p.category}</span>
         </div>
         <Title project={p} className="mt-5 text-[clamp(48px,5.4vw,76px)]" />
@@ -180,8 +180,7 @@ function Second({ project: p }: { project: ShippedWithHtml }) {
       className={`group relative cursor-pointer flex flex-col overflow-hidden rounded-[28px] bg-sage px-6 pt-7 sm:px-9 sm:pt-9 ${hoverLift}`}
     >
       <div className="text-xs font-bold tracking-[0.14em] uppercase opacity-80">
-        <span className="mr-3">{num(1)}</span>
-        {p.category}
+        {num(1)} · {p.category}
       </div>
       <Title project={p} className="mt-3 text-[clamp(40px,4vw,56px)]" />
       <p className="mt-3 max-w-[40ch] text-base leading-relaxed opacity-85">{p.summary}</p>
@@ -224,8 +223,7 @@ function Third({ project: p, index }: { project: ShippedWithHtml; index: number 
       className={`flex cursor-pointer flex-col rounded-[28px] border border-line bg-surface p-6 sm:p-7 ${hoverLift}`}
     >
       <div className="text-xs font-bold tracking-[0.14em] text-muted uppercase">
-        <span className="mr-3">{num(index)}</span>
-        {p.category}
+        {num(index)} · {p.category}
       </div>
       <Title project={p} className="mt-3 text-[34px]" />
       <p className="mt-3 text-[15px] leading-relaxed text-muted">{p.summary}</p>

@@ -6,7 +6,7 @@ export const profile: Profile = {
   headline: "Hi, I'm **Yaswanth.**",
   intro:
     'Three years building Java, Spring Boot and React systems at Societe Generale, now doing an MSc in Computer Science at University College Dublin.',
-  status: { open: true, text: 'Open to summer 2027 internships & full-time roles from late 2027, in Dublin or remote' },
+  status: { open: true, text: 'Open to summer 2027 internships & full-time roles from late 2027 · Dublin / Remote' },
   hero: {
     buildsLead: 'I build',
     builds: ['reliable APIs', 'distributed systems', 'full-stack apps'],
@@ -14,14 +14,14 @@ export const profile: Profile = {
   },
   badge: {
     top: 'Full-stack engineer',
-    bottomLeft: 'MSc CS, UCD',
+    bottomLeft: 'MSc CS · UCD',
     bottomRight: 'Dublin',
     facts: [
-      { label: 'Experience', value: '3 yrs at Societe Generale' },
-      { label: 'Studying', value: 'MSc CS at UCD' },
+      { label: 'Experience', value: '3 yrs · Societe Generale' },
+      { label: 'Studying', value: 'MSc CS · UCD' },
       { label: 'Built', value: '3 projects' },
       { label: 'Based in', value: 'Dublin / Remote' },
-      { label: 'Available', value: 'Internship summer 2027, full-time late 2027' },
+      { label: 'Available', value: 'Internship summer 2027 · full-time late 2027' },
     ],
   },
   contact: {
@@ -36,7 +36,7 @@ export const profile: Profile = {
     inProgressLabel: 'in progress',
   },
   liveDemoSoon: {
-    label: 'Live app coming soon',
+    label: 'Try the live app · soon',
     note: "Soon you'll be able to use the real app right here in your browser, with sample data and no sign-up. Until then, the clips below show it in action.",
   },
   links: {
