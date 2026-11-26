@@ -95,7 +95,7 @@ const mapNode = z.object({
 
 // One chapter of the story layout. `type` picks which part of the write-up it shows;
 // `decisions` are indexes into `decisions`, `highlight` names a latency row or failure to mark as mine.
-// A `feature` chapter groups one feature's write-up: `paragraph` (of the body text), `challenge`,
+// A `feature` chapter groups one feature's write-up: `paragraph` (one or more of the body text), `challenge`,
 // `decisions` and `limits` are indexes. The pinned panel shows `stat`, or the chapter's name
 // when it has no honest number. `label` names the chapter in the rail and kicker.
 const storyChapter = z.object({
@@ -107,7 +107,7 @@ const storyChapter = z.object({
   items: z.array(z.object({ title: text, body: text })).optional(),
   decisions: z.array(z.number().int().min(0)).optional(),
   highlight: text.optional(),
-  paragraph: z.number().int().min(0).optional(),
+  paragraph: z.union([z.number().int().min(0), z.array(z.number().int().min(0)).min(1)]).optional(),
   challenge: z.number().int().min(0).optional(),
   limits: z.array(z.number().int().min(0)).optional(),
 })
@@ -172,6 +172,8 @@ const shippedProject = z.object({
         modules: z.array(mapNode).min(2).max(4),
         // Which module the dot passes through
         traceModule: z.number().int().min(0),
+        // Which store the dot visits; both when left out
+        traceStore: z.number().int().min(0).max(1).optional(),
         stores: z.array(mapNode.extend({ link: text })).length(2),
       }),
     ])

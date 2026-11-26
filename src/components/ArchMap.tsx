@@ -133,7 +133,10 @@ function monoTall(d: Mono): Layout {
       { x: a + 8, y: mid + 4, text: d.stores[0].link },
       { x: b + 8, y: mid + 4, text: d.stores[1].link },
     ],
-    route: `M170 32 V114 H${cx(t)} V${t.y + 22} V${mid} H${b} V${sy + 22} V${mid} H${a} V${sy + 22} V${mid} H${cx(t)} V114 H170 V32`,
+    route:
+      d.traceStore === undefined
+        ? `M170 32 V114 H${cx(t)} V${t.y + 22} V${mid} H${b} V${sy + 22} V${mid} H${a} V${sy + 22} V${mid} H${cx(t)} V114 H170 V32`
+        : `M170 32 V114 H${cx(t)} V${t.y + 22} V${mid} H${[a, b][d.traceStore]} V${sy + 22} V${mid} H${cx(t)} V114 H170 V32`,
     group: null,
   }
 }

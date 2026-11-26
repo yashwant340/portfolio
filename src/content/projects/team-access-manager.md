@@ -40,6 +40,47 @@ architecture:
     - title: SMTP email
       detail: Onboarding and password-reset mail
       link: Spring Mail
+story:
+  - type: feature
+    label: Overview
+    heading: Who can use **what**, and why
+    stat: { value: "3", label: "roles, each with its own view" }
+    paragraph: [0, 1]
+    limits: [0, 3]
+  - type: feature
+    label: Permissions
+    heading: Inherit or **override**
+    challenge: 0
+  - type: feature
+    label: Audit trail
+    heading: Nothing is **deleted**
+    challenge: 1
+    decisions: [1]
+  - type: feature
+    label: Sign-in
+    heading: Recovery that resists **guessing**
+    stat: { value: "5 min", label: "until a six-digit code expires" }
+    challenge: 2
+    limits: [1, 2]
+  - type: architecture
+    heading: Approve and audit **together**
+    stat: { value: "1", label: "transaction for an approval and its audit entry" }
+diagram:
+  requestLabel: REST + bearer JWT
+  trace: one approval
+  client: { title: React client, detail: role-based routes, info: "Role-based routes built with Material UI. Every request carries a bearer JWT." }
+  server: { title: Spring Boot API, detail: one service, info: "One service that enforces authentication, applies permission rules, records audit events and sends email." }
+  modules:
+    - { title: Auth, detail: JWT filter, info: "A JWT filter authenticates each request." }
+    - { title: Permissions, detail: inherit or override, info: "Users inherit their team's permissions or get their own. Approving an inheriting user's request copies the team's permissions and changes only the requested feature." }
+    - { title: Audit, detail: "who, what, when", info: "Approvals, mode switches, deactivations and permission changes are written to an audit trail that records who did what and when." }
+    - { title: OTP, detail: password reset, info: "Six-digit codes that expire after five minutes and lock after five wrong attempts." }
+  traceModule: 1
+  traceStore: 0
+  stores:
+    - { title: PostgreSQL, detail: "users, teams, audit", link: JPA, info: "Users, teams, features, permissions and the audit trail. An approval and its audit entry are written in one transaction." }
+    - { title: SMTP email, detail: "onboarding, reset mail", link: Spring Mail, info: "Sends the temporary password for new accounts and the password-reset codes." }
+keyDecision: 0
 decisions:
   - title: One service, not microservices
     body: Approving a request updates permissions and writes the audit entry in one database transaction. Split across services, keeping those consistent would need a saga or an outbox.
